@@ -9,10 +9,10 @@ class Readme(click.Group):
     NAME = "readme"
     help = "collect news from your favorite channels"
 
-    def list_commands(self, ctx):
+    def list_commands(self, ctx: click.Context):
         return ['source']
 
-    def get_command(self, ctx, cmd_name):
+    def get_command(self, ctx: click.Context, cmd_name: str):
         try:
             mod = __import__('readme.commands', fromlist=[cmd_name])
             return getattr(mod, cmd_name)
@@ -22,5 +22,5 @@ class Readme(click.Group):
 
 @click.group(cls=Readme, help=Readme.help)
 @click.pass_context
-def cli(ctx):
+def cli(ctx: click.Context):
     pass

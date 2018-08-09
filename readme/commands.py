@@ -1,14 +1,28 @@
 import click
 
 from readme.readme import cli
+from readme.sources import Source
 
 
 @cli.command(
-    short_help="get latest news from different sources"
+    help="get latest news from different sources"
 )
-@click.argument('source_name', required=True)
+@click.argument('source_name')
 @click.pass_context
-def source(ctx, source_name):
-    click.echo("Fetching news from source: %s" % source_name)
+def source(ctx: click.Context, source_name: str):
+    if source_name != "list":
+        click.echo("Fetching news from source: %s" % source_name)
+        fetch_updates_from_source(source_name)
+    else:
+        list_sources()
 
-# "get latest news from hacker-news (https://news.ycombinator.com/)"
+
+def list_sources():
+    click.echo("Currently the plugin supports the following sources")
+    [click.echo("* %s" % name) for name in Source.get_all_sources()]
+
+
+def fetch_updates_from_source(source_name: str):
+    source_class = Source.get_source(source_name)
+    source_object = source_class()
+    source_object.fetch()
