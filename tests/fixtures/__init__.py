@@ -1,6 +1,8 @@
 from random import randint
 from typing import Dict, List
 
+from datetime import datetime
+
 from readme.news import News
 
 
@@ -16,7 +18,7 @@ def hacker_news_story(story_id: int, author: str = None, text: str = None) -> Di
     return story
 
 
-def create_news(title: str = None, body: str = None, url: str = None, tags: List = []):
+def create_news(title: str = None, published_at: datetime = None, body: str = None, url: str = None, tags: List = []):
     title = title if title else "I am " + str(randint(1, 100000))
 
-    return News(title, body=body, url=url, tags=tags)
+    return News(title, datetime.now(), body=body, url=url, tags=tags)

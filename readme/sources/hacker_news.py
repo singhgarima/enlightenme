@@ -1,6 +1,7 @@
 from typing import List
 
 import requests
+from datetime import datetime
 
 from readme.news import News
 from readme.sources import Source
@@ -30,5 +31,6 @@ class HackerNews(Source):
         response = requests.get(self.URL + "v0/item/%s.json" % str(story_id))
         if response.status_code == 200:
             story_details = response.json()
-            return News(story_details.get("title"), story_details.get("text"), story_details.get("url"))
+            published_at = datetime.fromtimestamp(story_details.get("time"))
+            return News(story_details.get("title"), published_at, story_details.get("text"), story_details.get("url"))
         response.raise_for_status()

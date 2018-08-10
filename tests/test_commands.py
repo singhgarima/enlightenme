@@ -1,5 +1,6 @@
 import unittest
 from unittest import mock
+from unittest.mock import call
 
 from click.testing import CliRunner
 
@@ -28,23 +29,27 @@ class TestSource(unittest.TestCase):
         mock_fetch.assert_called_once()
 
     @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
-    def test_source_when_typical_then_should_display_stories(self, mock_fetch):
-        news1 = create_news()
-        news2 = create_news()
-        mock_fetch.return_value = [news1, news2]
+    @mock.patch('readme.news.ConsoleNewsFormatter')
+    def test_source_when_typical_then_should_display_stories(self, mock_formatter, mock_fetch):
+        news_list = [(create_news()), (create_news())]
+        mock_fetch.return_value = news_list
+
         source_name = "hacker-news"
-        result = self._runner.invoke(self._cli, ["source", source_name])
+        self._runner.invoke(self._cli, ["source", source_name])
 
         mock_fetch.assert_called_once()
-        new_print = "Title: %s"
-        self.assertIn(new_print % news1.title, result.output)
-        self.assertIn(new_print % news2.title, result.output)
+        mock_formatter.assert_has_calls([call(news_list), call().format(), call().send()])
 
     def test_when_missing_source(self):
         result = self._runner.invoke(self._cli, ["source"])
 
         self.assertNotEqual(0, result.exit_code)
         self.assertIn("Error: Missing argument \"source_name\".", result.output)
+
+    def test_when_invalid_source(self):
+        result = self._runner.invoke(self._cli, ["source", "invalid"])
+
+        self.assertIn("Invalid source supplied. See --help", result.output)
 
 
 class TestSourceList(unittest.TestCase):
