@@ -1,6 +1,7 @@
 import unittest
 
-from readme.sources import Source, HackerNews
+from readme.sources import Source
+from readme.sources.hacker_news import HackerNews
 
 
 class TestSource(unittest.TestCase):
@@ -19,8 +20,3 @@ class TestSource(unittest.TestCase):
                 pass
 
             SubSource().fetch()
-
-
-class TestHackerNews(unittest.TestCase):
-    def test_fetch(self):
-        self.assertEqual(None, HackerNews().fetch())

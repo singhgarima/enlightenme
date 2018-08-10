@@ -1,8 +1,10 @@
 import unittest
+from unittest import mock
 
 from click.testing import CliRunner
 
 from readme.readme import cli
+from tests.fixtures import create_news
 
 
 class TestSource(unittest.TestCase):
@@ -16,18 +18,34 @@ class TestSource(unittest.TestCase):
         self.assertEqual(0, result.exit_code)
         self.assertIn("get latest news from different sources", result.output)
 
-    def test_for_a_source_name(self):
+    @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
+    def test_source_when_typical_then_should_display_help_text(self, mock_fetch):
         source_name = "hacker-news"
         result = self._runner.invoke(self._cli, ["source", source_name])
 
         self.assertEqual(0, result.exit_code)
         self.assertIn("Fetching news from source: %s" % source_name, result.output)
+        mock_fetch.assert_called_once()
+
+    @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
+    def test_source_when_typical_then_should_display_stories(self, mock_fetch):
+        news1 = create_news()
+        news2 = create_news()
+        mock_fetch.return_value = [news1, news2]
+        source_name = "hacker-news"
+        result = self._runner.invoke(self._cli, ["source", source_name])
+
+        mock_fetch.assert_called_once()
+        new_print = "Title: %s"
+        self.assertIn(new_print % news1.title, result.output)
+        self.assertIn(new_print % news2.title, result.output)
 
     def test_when_missing_source(self):
         result = self._runner.invoke(self._cli, ["source"])
 
         self.assertNotEqual(0, result.exit_code)
         self.assertIn("Error: Missing argument \"source_name\".", result.output)
+
 
 class TestSourceList(unittest.TestCase):
     def setUp(self):

@@ -9,6 +9,7 @@ requests = "==2.19.1"
 
 [dev-packages]
 coverage = "==4.5.1"
+requests-mock = "==1.5.2"
 
 [requires]
 python_version = "3.7"

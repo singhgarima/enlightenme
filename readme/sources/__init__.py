@@ -1,4 +1,7 @@
-from abc import ABCMeta, abstractmethod, abstractclassmethod
+from abc import ABCMeta, abstractclassmethod, abstractmethod
+from typing import List
+
+from readme.news import News
 
 
 class Source:
@@ -20,17 +23,5 @@ class Source:
             return None
 
     @abstractmethod
-    def fetch(self):
+    def fetch(self) -> List[News]:
         raise NotImplementedError()
-
-
-class HackerNews(Source):
-    """
-    Source: hacker-news (https://news.ycombinator.com/)
-    """
-    @classmethod
-    def name(cls):
-        return "hacker-news"
-
-    def fetch(self):
-        pass

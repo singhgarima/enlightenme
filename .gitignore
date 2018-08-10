@@ -52,3 +52,4 @@ coverage.xml
 .venv
 env/
 venv/
+requirements.txt
