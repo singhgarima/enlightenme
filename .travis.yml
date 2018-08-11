@@ -8,6 +8,7 @@ install:
   - pip install pipenv
   - pipenv install --three
   - pipenv install --ignore-pipfile
+  - pipenv install --dev --ignore-pipfile
 
 script:
   - pipenv run python setup.py test
