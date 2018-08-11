@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from readme.news import News, NewsFormatter, ConsoleNewsFormatter
+from readme.news import News, NewsFormatter, ConsoleNewsFormatter, HtmlNewsFormatter
 from tests.fixtures import create_news
 
 
@@ -43,6 +43,9 @@ class TestNewsFormatter(unittest.TestCase):
 
         with self.assertRaises(NotImplementedError):
             NewsFormatter(self._news_list).format()
+
+    def test_formatter_for_format(self):
+        self.assertEqual(ConsoleNewsFormatter, NewsFormatter.formatter_for_format(format_type='console'))
 
 
 class TestConsoleNewsFormatter(unittest.TestCase):
@@ -96,3 +99,18 @@ class TestConsoleNewsFormatter(unittest.TestCase):
                 ", ".join(tags)
             ),
             formatter._output)
+
+
+class TestHtmlNewsFormatter(unittest.TestCase):
+    def setUp(self):
+        self._news = create_news()
+        self._news_list = [self._news]
+        self._formatter = HtmlNewsFormatter(self._news_list)
+
+    def test_initialize(self):
+        self.assertIsInstance(self._formatter, NewsFormatter)
+        self.assertEqual(self._news_list, self._formatter.news_list)
+        self.assertEqual(None, self._formatter._output)
+
+    def test_format(self):
+        self.assertIsNone(self._formatter.format())

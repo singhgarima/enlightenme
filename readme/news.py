@@ -4,6 +4,8 @@ from typing import List
 
 import click
 
+from readme.utils import camel_case
+
 
 class News:
     def __init__(self, title, published_at: datetime, body: str = None, url: str = None, tags: List = []):
@@ -16,6 +18,9 @@ class News:
 
 class NewsFormatter:
     __metaclass__ = ABCMeta
+
+    DEFAULT_FORMAT = "console"
+    FORMAT_OPTIONS = ['console', 'html']
 
     def __init__(self, news_list: List[News]):
         self._news_list = news_list
@@ -33,6 +38,10 @@ class NewsFormatter:
     def format(self):
         raise NotImplementedError
 
+    @classmethod
+    def formatter_for_format(cls, format_type: str):
+        return eval("%sNewsFormatter" % camel_case(format_type))
+
 
 class ConsoleNewsFormatter(NewsFormatter):
     def format(self):
@@ -46,3 +55,8 @@ class ConsoleNewsFormatter(NewsFormatter):
 
     def send(self):
         click.echo(self._output)
+
+
+class HtmlNewsFormatter(NewsFormatter):
+    def format(self):
+        pass

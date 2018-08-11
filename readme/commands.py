@@ -3,6 +3,7 @@ from typing import List
 import click
 
 from readme import news
+from readme.news import NewsFormatter
 from readme.readme import cli
 from readme.sources import Source
 
@@ -11,8 +12,11 @@ from readme.sources import Source
     help="get latest news from different sources"
 )
 @click.argument('source_name')
+@click.option('--format', default=NewsFormatter.DEFAULT_FORMAT,
+              type=click.Choice(NewsFormatter.FORMAT_OPTIONS),
+              help="Displays news in a format")
 @click.pass_context
-def source(ctx: click.Context, source_name: str):
+def source(ctx: click.Context, source_name: str, format: str):
     if source_name == "list":
         list_sources()
     else:
@@ -20,7 +24,7 @@ def source(ctx: click.Context, source_name: str):
             ctx.fail("Invalid source supplied. See --help")
         click.echo("Fetching news from source: %s" % source_name)
         news_list = fetch_updates_from_source(source_name)
-        format_news_list(news_list)
+        format_news_list(news_list, format)
 
 
 def list_sources():
@@ -35,7 +39,8 @@ def fetch_updates_from_source(source_name: str) -> List:
     return source_object.fetch()
 
 
-def format_news_list(news_list):
-    formatter = news.ConsoleNewsFormatter(news_list)
+def format_news_list(news_list: List, format_type: str):
+    klass = news.NewsFormatter.formatter_for_format(format_type)
+    formatter = klass(news_list)
     formatter.format()
     formatter.send()

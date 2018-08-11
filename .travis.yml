@@ -11,4 +11,5 @@ install:
   - pipenv install --dev --ignore-pipfile
 
 script:
-  - pipenv run python setup.py test
+  - pipenv run coverage run setup.py test
+  - pipenv run coverage report
