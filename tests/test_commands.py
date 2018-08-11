@@ -26,7 +26,7 @@ class TestSource(unittest.TestCase):
 
         self.assertEqual(0, result.exit_code)
         self.assertIn("Fetching news from source: %s" % source_name, result.output)
-        mock_fetch.assert_called_once()
+        mock_fetch.assert_called_once_with()
 
     @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
     @mock.patch('readme.news.ConsoleNewsFormatter')
