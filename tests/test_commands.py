@@ -37,7 +37,7 @@ class TestSource(unittest.TestCase):
         source_name = "hacker-news"
         self._runner.invoke(self._cli, ["source", source_name])
 
-        mock_fetch.assert_called_once()
+        mock_fetch.assert_called_once_with()
         mock_formatter.assert_has_calls([call(news_list), call().format(), call().send()])
 
     def test_when_missing_source(self):
