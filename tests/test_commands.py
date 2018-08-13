@@ -29,7 +29,7 @@ class TestSource(unittest.TestCase):
         mock_fetch.assert_called_once_with()
 
     @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
-    @mock.patch('readme.news.ConsoleNewsFormatter')
+    @mock.patch('readme.news_formatters.ConsoleNewsFormatter')
     def test_source_when_typical_then_should_display_stories(self, mock_formatter, mock_fetch):
         news_list = [(create_news()), (create_news())]
         mock_fetch.return_value = news_list

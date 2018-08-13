@@ -2,8 +2,8 @@ from typing import List
 
 import click
 
-from readme import news
-from readme.news import NewsFormatter
+import readme.news_formatters
+from readme.news_formatters import NewsFormatter
 from readme.readme import cli
 from readme.sources import Source
 
@@ -40,7 +40,7 @@ def fetch_updates_from_source(source_name: str) -> List:
 
 
 def format_news_list(news_list: List, format_type: str):
-    klass = news.NewsFormatter.formatter_for_format(format_type)
+    klass = readme.news_formatters.NewsFormatter.formatter_for_format(format_type)
     formatter = klass(news_list)
     formatter.format()
     formatter.send()

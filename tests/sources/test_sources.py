@@ -5,6 +5,9 @@ from readme.sources.hacker_news import HackerNews
 
 
 class TestSource(unittest.TestCase):
+    def test_name(self):
+        self.assertEqual(None, Source().name())
+
     def test_get_all_sources(self):
         self.assertEqual(['hacker-news'], Source.get_all_sources())
 
