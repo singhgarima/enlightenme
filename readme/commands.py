@@ -20,11 +20,13 @@ def source(ctx: click.Context, source_name: str, format: str):
     if source_name == "list":
         list_sources()
     else:
-        if source_name not in Source.get_all_sources():
+        fetcher = Fetcher(source_name, format)
+        if not fetcher.valid():
             ctx.fail("Invalid source supplied. See --help")
+
         click.echo("Fetching news from source: %s" % source_name)
-        news_list = fetch_updates_from_source(source_name)
-        format_news_list(news_list, format)
+        content = fetcher.fetch_and_format()
+        click.echo(content)
 
 
 def list_sources():
@@ -32,15 +34,30 @@ def list_sources():
     [click.echo("* %s" % name) for name in Source.get_all_sources()]
 
 
-def fetch_updates_from_source(source_name: str) -> List:
-    source_class = Source.get_source(source_name)
-    __import__(source_class.__module__, fromlist=[source_class.__name__])
-    source_object = source_class()
-    return source_object.fetch()
+class Fetcher:
+    def __init__(self, source_name: str, format_type: str = NewsFormatter.DEFAULT_FORMAT):
+        self._source_name = source_name
+        self._format_type = format_type
+        self._news_list = []
 
+    def valid(self):
+        return self._source_name in Source.get_all_sources()
 
-def format_news_list(news_list: List, format_type: str):
-    klass = readme.news_formatters.NewsFormatter.formatter_for_format(format_type)
-    formatter = klass(news_list)
-    formatter.format()
-    formatter.send()
+    def fetch_and_format(self) -> List:
+        self.fetch()
+        self.format()
+        return self._news_list
+
+    def fetch(self):
+        source_class = Source.get_source(self._source_name)
+        __import__(source_class.__module__, fromlist=[source_class.__name__])
+        source_object = source_class()
+        self._news_list = source_object.fetch()
+
+    def format(self):
+        self._format_news_list()
+
+    def _format_news_list(self):
+        klass = readme.news_formatters.NewsFormatter.formatter_for_format(self._format_type)
+        formatter = klass(self._news_list)
+        formatter.format()

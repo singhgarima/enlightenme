@@ -1,8 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from typing import List
 
-import click
-
 from readme.news import News
 from readme.utils import camel_case
 
@@ -43,9 +41,6 @@ class ListNewsFormatter(NewsFormatter):
 
             if news.url: self._output += "\t    URL: %s\n" % news.url
             if news.tags: self._output += "\t    Tags: %s\n" % ", ".join(news.tags)
-
-    def send(self):
-        click.echo(self._output)
 
 
 class HtmlNewsFormatter(NewsFormatter):
