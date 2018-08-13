@@ -11,7 +11,6 @@ class TestNewsFormatter(unittest.TestCase):
 
     def test_initialize(self):
         self.assertEqual(self._news_list, self._formatter.news_list)
-        self.assertEqual(None, self._formatter._output)
 
     def test_set_news_list(self):
         new_news_list = [create_news(), create_news()]
@@ -35,21 +34,20 @@ class TestListNewsFormatter(unittest.TestCase):
         news = create_news()
         formatter = ListNewsFormatter([news])
 
-        formatter.format()
+        output = formatter.format()
 
         self.assertEqual(
             ("\n" +
              "\t1. Title: %s\n" +
              "\t    Published At: %s\n") % (
-                news.title, news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ')),
-            formatter._output)
+                news.title, news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ')), output)
 
     def test_format_when_news_has_urls(self):
         url = "http://example.com/thistest"
         news = create_news(url=url)
         formatter = ListNewsFormatter([news])
 
-        formatter.format()
+        output = formatter.format()
 
         self.assertEqual(
             ("\n" +
@@ -60,15 +58,14 @@ class TestListNewsFormatter(unittest.TestCase):
                 news.title,
                 news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
                 url
-            ),
-            formatter._output)
+            ), output)
 
     def test_format_when_news_has_tags(self):
         tags = ["python", "click"]
         news = create_news(tags=tags)
         formatter = ListNewsFormatter([news])
 
-        formatter.format()
+        output = formatter.format()
 
         self.assertEqual(
             ("\n" +
@@ -79,8 +76,7 @@ class TestListNewsFormatter(unittest.TestCase):
                 news.title,
                 news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
                 ", ".join(tags)
-            ),
-            formatter._output)
+            ), output)
 
 
 class TestHtmlNewsFormatter(unittest.TestCase):
@@ -92,7 +88,6 @@ class TestHtmlNewsFormatter(unittest.TestCase):
     def test_initialize(self):
         self.assertIsInstance(self._formatter, NewsFormatter)
         self.assertEqual(self._news_list, self._formatter.news_list)
-        self.assertEqual(None, self._formatter._output)
 
     def test_format(self):
         self.assertIsNone(self._formatter.format())

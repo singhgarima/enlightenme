@@ -13,7 +13,6 @@ class NewsFormatter:
 
     def __init__(self, news_list: List[News]):
         self._news_list = news_list
-        self._output = None
 
     @property
     def news_list(self):
@@ -24,7 +23,7 @@ class NewsFormatter:
         self._news_list = value
 
     @abstractmethod
-    def format(self):
+    def format(self) -> str:
         raise NotImplementedError
 
     @classmethod
@@ -33,16 +32,17 @@ class NewsFormatter:
 
 
 class ListNewsFormatter(NewsFormatter):
-    def format(self):
-        self._output = "\n"
+    def format(self) -> str:
+        output = "\n"
         for index, news in enumerate(self.news_list):
-            self._output += "\t%d. Title: %s\n" % (index + 1, news.title)
-            self._output += "\t    Published At: %s\n" % news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ')
+            output += "\t%d. Title: %s\n" % (index + 1, news.title)
+            output += "\t    Published At: %s\n" % news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ')
 
-            if news.url: self._output += "\t    URL: %s\n" % news.url
-            if news.tags: self._output += "\t    Tags: %s\n" % ", ".join(news.tags)
+            if news.url: output += "\t    URL: %s\n" % news.url
+            if news.tags: output += "\t    Tags: %s\n" % ", ".join(news.tags)
+        return output
 
 
 class HtmlNewsFormatter(NewsFormatter):
-    def format(self):
+    def format(self) -> str:
         pass
