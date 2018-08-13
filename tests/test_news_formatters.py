@@ -1,6 +1,6 @@
 import unittest
 
-from readme.news_formatters import NewsFormatter, ConsoleNewsFormatter, HtmlNewsFormatter
+from readme.news_formatters import NewsFormatter, ListNewsFormatter, HtmlNewsFormatter
 from tests.fixtures import create_news
 
 
@@ -27,35 +27,35 @@ class TestNewsFormatter(unittest.TestCase):
             NewsFormatter(self._news_list).format()
 
     def test_formatter_for_format(self):
-        self.assertEqual(ConsoleNewsFormatter, NewsFormatter.formatter_for_format(format_type='console'))
+        self.assertEqual(ListNewsFormatter, NewsFormatter.formatter_for_format(format_type='list'))
 
 
-class TestConsoleNewsFormatter(unittest.TestCase):
+class TestListNewsFormatter(unittest.TestCase):
     def test_format(self):
         news = create_news()
-        formatter = ConsoleNewsFormatter([news])
+        formatter = ListNewsFormatter([news])
 
         formatter.format()
 
         self.assertEqual(
             ("\n" +
              "\t1. Title: %s\n" +
-             "\t   Published At: %s\n") % (
+             "\t    Published At: %s\n") % (
                 news.title, news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ')),
             formatter._output)
 
     def test_format_when_news_has_urls(self):
         url = "http://example.com/thistest"
         news = create_news(url=url)
-        formatter = ConsoleNewsFormatter([news])
+        formatter = ListNewsFormatter([news])
 
         formatter.format()
 
         self.assertEqual(
             ("\n" +
              "\t1. Title: %s\n" +
-             "\t   Published At: %s\n" +
-             "\t   URL: %s\n"
+             "\t    Published At: %s\n" +
+             "\t    URL: %s\n"
              ) % (
                 news.title,
                 news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -66,15 +66,15 @@ class TestConsoleNewsFormatter(unittest.TestCase):
     def test_format_when_news_has_tags(self):
         tags = ["python", "click"]
         news = create_news(tags=tags)
-        formatter = ConsoleNewsFormatter([news])
+        formatter = ListNewsFormatter([news])
 
         formatter.format()
 
         self.assertEqual(
             ("\n" +
              "\t1. Title: %s\n" +
-             "\t   Published At: %s\n" +
-             "\t   Tags: %s\n"
+             "\t    Published At: %s\n" +
+             "\t    Tags: %s\n"
              ) % (
                 news.title,
                 news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
