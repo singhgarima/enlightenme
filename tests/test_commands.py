@@ -43,6 +43,19 @@ class TestSource(unittest.TestCase):
 
         mock_fetch_and_format.assert_called_once_with()
 
+    @mock.patch('readme.commands.Fetcher')
+    def test_source_when_keywords_provided_then_fetch_and_format_using_fetcher(self, mock_fetcher):
+        mock_object = mock.Mock()
+        mock_fetcher.return_value = mock_object
+        mock_object.fetch_and_format.return_value = True
+        mock_object.mock_valid.return_value = True
+
+        source_name = "hacker-news"
+        self._runner.invoke(self._cli, ["source", source_name, "--keywords", "python,chaos"])
+
+        mock_fetcher.assert_called_once_with(source_name, format_type='list', keywords=["python", "chaos"])
+        mock_object.fetch_and_format.assert_called_once_with()
+
     @mock.patch('readme.commands.Fetcher.fetch_and_format')
     @mock.patch('readme.news_output.NewsOutput')
     def test_source_when_typical_then_should_display_stories(self, mock_output, mock_fetch_and_format):
@@ -82,7 +95,20 @@ class TestSourceList(unittest.TestCase):
 
 class TestFetcher(unittest.TestCase):
     def setUp(self):
-        self._fetcher = Fetcher('hacker-news', 'list')
+        self._keywords = ['a', 'b']
+        self._fetcher = Fetcher('hacker-news', 'list', self._keywords)
+
+    def test_initialize_when_typical(self):
+        self.assertEqual('hacker-news', self._fetcher._source_name)
+        self.assertEqual('list', self._fetcher._format_type)
+        self.assertEqual(['a', 'b'], self._fetcher._keywords)
+
+    def test_initialize_when_no_optional_parameter_is_provided(self):
+        self._fetcher = Fetcher('hacker-news')
+
+        self.assertEqual('hacker-news', self._fetcher._source_name)
+        self.assertEqual('list', self._fetcher._format_type)
+        self.assertEqual(None, self._fetcher._keywords)
 
     def test_valid(self):
         self.assertTrue(self._fetcher.valid())
@@ -100,14 +126,39 @@ class TestFetcher(unittest.TestCase):
         self._fetcher.fetch_and_format()
 
         self.assertEqual(news_list, self._fetcher._news_list)
-        mock_fetch.assert_called_once_with()
+        mock_fetch.assert_called_once_with(keywords=self._keywords)
 
     @mock.patch('readme.news_formatters.ListNewsFormatter')
     @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
-    def test_fetch_and_format_when_typical_then_should_fetch_from_hacker_news_source(self, mock_fetch, mock_formatter):
+    def test_fetch_and_format_when_typical_then_should_use_list_formatter_to_format_news(self, mock_fetch,
+                                                                                         mock_formatter):
         news_list = ['news1', 'news2']
         mock_fetch.return_value = news_list
 
+        self._fetcher.fetch_and_format()
+
+        mock_formatter.assert_has_calls([call(news_list), call().format()])
+
+    @mock.patch('readme.news_formatters.HtmlNewsFormatter')
+    @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
+    def test_fetch_and_format_when_format_is_html_then_should_use_html_formatter_to_format_news(self, mock_fetch,
+                                                                                                mock_formatter):
+        news_list = ['news1', 'news2']
+        mock_fetch.return_value = news_list
+
+        self._fetcher._format_type = "html"
+        self._fetcher.fetch_and_format()
+
+        mock_formatter.assert_has_calls([call(news_list), call().format()])
+
+    @mock.patch('readme.news_formatters.ListNewsFormatter')
+    @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
+    def test_fetch_and_format_when_no_keywords_are_passed_then_should_pass_keywords_to_source(self, mock_fetch,
+                                                                                           mock_formatter):
+        news_list = ['news1', 'news2']
+        mock_fetch.return_value = news_list
+
+        self._fetcher = Fetcher('hacker-news')
         self._fetcher.fetch_and_format()
 
         mock_formatter.assert_has_calls([call(news_list), call().format()])

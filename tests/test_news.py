@@ -5,17 +5,42 @@ from readme.news import News
 
 
 class TestNews(unittest.TestCase):
+    def setUp(self):
+        self._title = 'Test Title'
+        self._body = 'Long Description'
+        self._url = "http://example.com"
+        self._tags = ['python', 'click']
+        self._published_at = datetime.now()
+        self._news = News(title=self._title, published_at=self._published_at, body=self._body, url=self._url,
+                          tags=self._tags)
+
     def test_initialize(self):
-        title = 'Test Title'
-        body = 'Long Description'
-        url = "http://example.com"
-        tags = ['python', 'click']
-        published_at = datetime.now()
+        self.assertEqual(self._title, self._news.title)
+        self.assertEqual(self._published_at, self._news.published_at)
+        self.assertEqual(self._body, self._news.body)
+        self.assertEqual(self._url, self._news.url)
+        self.assertEqual(self._tags, self._news.tags)
 
-        news = News(title=title, published_at=published_at, body=body, url=url, tags=tags)
+    def test_has_any_keyword_when_keyword_in_tags(self):
+        self.assertTrue(self._news.has_any_keyword('PYTHON'))
 
-        self.assertEqual(title, news.title)
-        self.assertEqual(published_at, news.published_at)
-        self.assertEqual(body, news.body)
-        self.assertEqual(url, news.url)
-        self.assertEqual(tags, news.tags)
+    def test_has_any_keyword_when_keyword_in_title(self):
+        self.assertTrue(self._news.has_any_keyword('title'))
+
+    def test_has_any_keyword_when_keyword_in_body(self):
+        self.assertTrue(self._news.has_any_keyword('LONG'))
+
+    def test_has_any_keyword_when_keyword_not_found(self):
+        self.assertFalse(self._news.has_any_keyword('nonexistent'))
+
+    def test_contains_any_keywords_when_one_keyword_in_tags(self):
+        self.assertTrue(self._news.contains_any_keywords(['python', 'nonexistent']))
+
+    def test_contains_any_keywords_when_one_keyword_in_title(self):
+        self.assertTrue(self._news.contains_any_keywords(['Title', 'nonexistent']))
+
+    def test_contains_any_keywords_when_one_keyword_in_body(self):
+        self.assertTrue(self._news.contains_any_keywords(['Long', 'nonexistent']))
+
+    def test_contains_any_keywords_when_one_keyword_not_found(self):
+        self.assertFalse(self._news.contains_any_keywords(['nonexistent', 'nonexistent']))

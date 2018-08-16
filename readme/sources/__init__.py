@@ -24,7 +24,7 @@ class Source:
             return None
 
     @abstractmethod
-    def fetch(self) -> List[News]:
+    def fetch(self, keywords: List = None) -> List[News]:
         raise NotImplementedError()
 
     @classmethod
