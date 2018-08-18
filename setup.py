@@ -1,14 +1,14 @@
 from setuptools import setup
 
 setup(
-    name='readme',
+    name='enlightenme',
     version='0.1',
-    py_modules=['readme'],
+    py_modules=['enlightenme'],
     install_requires=[
         'Click',
     ],
     entry_points='''
         [console_scripts]
-        readme=readme.readme:cli
+        enlightenme=enlightenme.enlightenme:cli
     ''',
 )

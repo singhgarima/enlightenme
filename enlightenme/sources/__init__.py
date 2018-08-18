@@ -1,8 +1,8 @@
 from abc import ABCMeta, abstractclassmethod, abstractmethod
 from typing import List, Optional
 
-from readme.news.news import News
-from readme.utils import import_submodules
+from enlightenme.news.news import News
+from enlightenme.utils import import_submodules
 
 
 class Source:
@@ -29,5 +29,5 @@ class Source:
 
     @classmethod
     def _sub_classes(cls) -> List:
-        import_submodules('readme.sources')
+        import_submodules('enlightenme.sources')
         return cls.__subclasses__()

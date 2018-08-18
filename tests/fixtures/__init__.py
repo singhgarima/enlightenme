@@ -2,7 +2,7 @@ from datetime import datetime
 from random import randint
 from typing import Dict
 
-from readme.news.news import News
+from enlightenme.news.news import News
 
 
 def hacker_news_story(story_id: int, author: str = None, text: str = None) -> Dict:

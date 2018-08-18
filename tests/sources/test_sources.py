@@ -1,7 +1,7 @@
 import unittest
 
-from readme.sources import Source
-from readme.sources.hacker_news import HackerNews
+from enlightenme.sources import Source
+from enlightenme.sources.hacker_news import HackerNews
 
 
 class TestSource(unittest.TestCase):

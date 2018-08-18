@@ -3,8 +3,8 @@ from typing import List
 
 import requests
 
-from readme.news.news import News
-from readme.sources import Source
+from enlightenme.news.news import News
+from enlightenme.sources import Source
 
 
 class HackerNews(Source):

@@ -1,10 +1,10 @@
 import click
 
-from readme.news import news_output
-from readme.commands.helpers import fetcher
-from readme.news.news_formatters import NewsFormatter
-from readme.readme import cli
-from readme.sources import Source
+from enlightenme.news import news_output
+from enlightenme.commands.helpers import fetcher
+from enlightenme.news.news_formatters import NewsFormatter
+from enlightenme.enlightenme import cli
+from enlightenme.sources import Source
 
 
 @cli.command(

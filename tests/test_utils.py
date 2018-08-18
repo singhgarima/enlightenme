@@ -1,6 +1,6 @@
 import unittest
 
-from readme.utils import camel_case
+from enlightenme.utils import camel_case
 
 
 class TestCamelCase(unittest.TestCase):

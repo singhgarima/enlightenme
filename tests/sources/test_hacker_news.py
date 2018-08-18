@@ -5,7 +5,7 @@ import unittest
 import requests_mock
 from requests import HTTPError
 
-from readme.sources.hacker_news import HackerNews
+from enlightenme.sources.hacker_news import HackerNews
 from tests.fixtures import hacker_news_story
 
 
@@ -53,7 +53,8 @@ class TestHackerNews(unittest.TestCase):
         self.assertEqual('404', str(error.exception.response.status_code))
 
     @staticmethod
-    def _mock_10_stories_to_have_keywords(m, stories, keywords=[]):
+    def _mock_10_stories_to_have_keywords(m, stories, keywords=None):
+        keywords = [] if keywords is None else keywords
         for index, story_id in enumerate(stories):
             text = "Test Test"
             if index % 2 == 0:

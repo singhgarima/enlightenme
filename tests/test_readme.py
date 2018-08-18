@@ -2,7 +2,7 @@ import unittest
 
 from click.testing import CliRunner
 
-from readme.readme import cli
+from enlightenme.enlightenme import cli
 
 
 class TestReadme(unittest.TestCase):
@@ -25,4 +25,4 @@ class TestReadme(unittest.TestCase):
         result = self._runner.invoke(self._cli, ["invalid"])
 
         self.assertNotEqual(0, result.exit_code)
-        self.assertIn("Error: No such sub-command supported for readme: invalid", result.output)
+        self.assertIn("Error: No such sub-command supported for enlightenme: invalid", result.output)

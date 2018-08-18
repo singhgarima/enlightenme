@@ -1,8 +1,8 @@
 from typing import List
 
-import readme.news.news_formatters
-from readme.news.news_formatters import NewsFormatter
-from readme.sources import Source
+import enlightenme.news.news_formatters
+from enlightenme.news.news_formatters import NewsFormatter
+from enlightenme.sources import Source
 
 
 class Fetcher:
@@ -26,6 +26,6 @@ class Fetcher:
         self._news_list = source_object.fetch(keywords=self._keywords)
 
     def _format(self) -> str:
-        klass = readme.news.news_formatters.NewsFormatter.formatter_for_format(self._format_type)
+        klass = enlightenme.news.news_formatters.NewsFormatter.formatter_for_format(self._format_type)
         formatter = klass(self._news_list)
         return formatter.format()
