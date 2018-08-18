@@ -6,11 +6,11 @@ deploy:
   provider: pypi
   user: singhgarima
   password:
-    secure: ENC3kuAbXsO3fL4depbLg/PRV6YvaRx+owd/yfAAtRLcSPaVxezuiIUh5V8xTIuH3TvcAeFhp60SqttqOr1/Ij0gfn7+jm6rmk4sbH9vOKH83AAlFcDar4qoh3VmtuugFWokHTI36tb92Brra7nUBuFYUC6xBanaeM8qTUH21t6CGPKcP7kYV3SWYaQK3brhneKKu973X6TfqenJoBCLVYTGGKa4xb94hqCXyILUH/a8Pet1uJrUGQbDK7TGgPfK8MpDGockBtbP1b0n/+R7xUvAeaDrxuajayVuVJOvD60DpQuQGuf5dc0q59DKWvsIq/cdOYboJ21VO3hxXLhI5qAP+ZImKSuMkziunVWdUTrviA9I/Xso4jrW1zvlCYcs3lb1jtZydy/NK5CSgLK+3XqXs2LSTsLFXJO4JZ7mXAXKc79X2WoxF+1WAQdxRXrF/IleeugaB0WhiifCzOY2Jx5rfZX+Y0L439IZfthiXW1iRFtbBwEfcYIqfR6IWeP3STpkmFvPt5ggFO2U2PJt9ZD3J/5pf6yavJDrSsh1NRkTsENHEBKhINe4hl3I5o3MibFkcxd9rDqsGteoWJo00+bMsl9CsMG5CejaUzOlHGNBdm1fKmeEJvMuvZUfmWcXecqAZld9bkyEP//rl1IeEyeBfF/HomG8P5w6LCRpaac=
-  distributions: "sdist bdist_wheel"
+    secure: d3KEJH3Qlsjn0huYk2acYP5YI3ulD9xW2KNq/ijnTAXQx592ykNtDKhifIANKBHoz8JCWgY+FKQmg2nqcYC7nEurQLVj6IGnBOVBK1gk7/eVap2Tma64vwdFyus1tz4nzJpfUzmaLi6kld27h15PlPc+AP6H3Ur7Jo2WxA7UUsAy8D5saC6VCHz7CnBf6lE4j3YJ2JJlTW711LgTg8+dlas1y8m5GSBmYqhlbL5ih5rs3VUjb1R7MIhFVoj1i3YEh8poQHYyUQCVCHUD5qChKKfeHH2sFI8jCFDkWmQSm3uFM2WQm2PbDEyHLe8+8ABhJsRDkQq6iJeFq8/MA2kUQvJu4Bk2Qidi37sZXWAbpCd9seE0AM3DQdLSHSJyt+a92Lwh8p6ZkLcPYBc0IW8d8CQrPWwWL67TuoGsZBwSx+x+cn1smbqS/ymkUGOvW2v1pLoWrHUzP0e5i+y3nKAzqt3fxorXYfQpCXiNe6y8LkDi1MPuRklPjfjvyoJ4CpIHXFVOUKY3yQXSt3c8aCEAE+wFuiifWhNF+w92/kyRawjZheqLiVAdO7FRLCsnmgK76i/6AlXQ7RpOWIExkD/ZbPZqxlBBo5TCn8ORxU4eOtvrA9iFu5SyfcavswQwCIgk/7R5kflM7yW0qCNuCM5dKCLafqVuO/1d2SAKEawrtxg=
+  distributions: sdist bdist_wheel
   on:
     tags: true
-    condition: $TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$
+    condition: "$TRAVIS_TAG =~ ^v[0-9]+\\.[0-9]+\\.[0-9]+$"
 install:
 - pip install pipenv
 - pipenv install --three
