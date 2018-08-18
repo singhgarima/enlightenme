@@ -23,6 +23,7 @@ function run-test () {
 function release () {
     echo "Publishing to PyPI"
     pipenv run pip install twine
+
     pipenv run twine upload dist/* -u ${PYPI_USER_NAME} -p ${PYPI_PWD}
 }
 
