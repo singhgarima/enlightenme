@@ -13,5 +13,3 @@ install:
 - pipenv install --dev --ignore-pipfile
 script:
 - bash ci.bash
-deploy:
-  skip_cleanup: true
