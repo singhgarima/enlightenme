@@ -2,15 +2,10 @@ language: python
 python:
 - 3.5
 - 3.6
-deploy:
-  provider: pypi
-  user: singhgarima
-  password:
-    secure: mpNKzkQ9p7tYrAw0kTraIAaM6Kg50sP4Gr2ililIM1Wi6gZF345YGQlNCD7XxNeXchCkMWEuStMfMC5gOAmaYHt0e8KquLXpE6yvp6DfUoAY/UGICS9mFp/w7esQf1FzcFSNOgcypS/RCg3Ylpd+BWZnIEtI8MGf5zwtvShrAI7ea+5LEGivLB9jgCvNVE+PzRdovivmGhQcRzUiIVxm33yDMxJLR3T5lUL6i2a9X32r+mx8w9bpHy4ig9zKcu7naMpDV/exYqyb3v68xUyF0kZgBxxkDOdDRAyk+O+/4sE7f0Wxb3piLVXwBxyUhBJNbthfnnJqEB3XAUnpwpd3plpybb7B1qfr9n6GYJ/IwQ8Mirn7+bId88iqTVuo/W3lzqxEUcpzkVzv+K9Q5Wgy7r1Bd+zHrYKSvHmeTFumZN5jTDTxLQMApmVHyXcXCxJ39H5ktSSnp2mOBIwjI5WKnffc4Jzyyp1OX6AQqm5Zwa0M2e06wahjgLmHBIhpPjp172oZDJkHF3RVrU7DE1y0x6UuI1Ym/EAhQZTSl5loD/chhpNJA6H3LLlUGU2kldKwd8mf2S8qg3MOF3SXxTEPXItZfv1Hyl5L2XZu6UgqY7NlrjrxnniuXGQVxnTqxgKAmDA5P2WaXztWWtZxy3LQ37aOE/XyT6YO8LP1FlR5U7k=
-  distributions: sdist bdist_wheel
-  on:
-    tags: true
-    condition: "$TRAVIS_PYTHON_VERSION =~ ^3\.6+$"
+env:
+  global:
+  - secure: InlGRPpD8bfwdK5QSsXPqdRaIaNG6iLC9LKHkBvcZhNzQQoDmGUoy2K+6OAftABXjaF1IBeRRfx5A+N+afJIhwA7rKHLUB2ItlirN7M2aVAOEoEhP2ilscT+OsJi4mUGbF6QDTvfNhjAbJwTkBwOP9MQ7NATxAmlqiiFzQ0mOZpevbr/4X0+MMr0ypweZiezlz5OrPUlMuJkCJIDQPAPEMZy+mh5DCdLpdA0mynGXpAEBZ7OwSn0QcrnDVezW5DM8qPcyVy4t++CQ22Jte/636xdDzNPpav1jm+urje6/3PbdZ6a2asL27eUtIJgqHE3+06oXt07+LjyaWJl6ooa1LhzeDnnj4npB0Cs3b3soboATwRpCWIj446rs75L/DeZRKf5XVwePsnjxW6WGII0U4KnCv4jdxw0qzs/mieywWsFlrUzYIvGpujzypmP4DJ9Djc5/jeAVMvKSKIVVa90cAJ1ouy50P54kquwduh6fvFxlb8kBP/DGnziHFiVf4Jq0pDzRwJQIZgdIHP8eXJghsHxs9u32M5u8MXX4LXpW7eLla9G6PTGq20Vpo7bFqdb3GRgq9NFQOUxN8NCWSG/DlvrapRRmLnrtqHp+SQPYsaHtKEvGtgjJhSSHFGgI926lZt8ogosEvZVOcr/FOAaozxPBvVqEtEucJUDgajuxFc=
+  - PYPI_USER_NAME: singhgarima
 install:
 - pip install pipenv
 - pipenv install --three
@@ -18,3 +13,5 @@ install:
 - pipenv install --dev --ignore-pipfile
 script:
 - bash ci.bash
+deploy:
+  skip_cleanup: true
