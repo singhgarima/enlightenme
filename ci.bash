@@ -31,7 +31,10 @@ function main () {
     build || return 1
     run-test || return 1
 
-    if [[ $TRAVIS_PYTHON_VERSION =~ ^v3\.6+$ ]]; then
+    echo "VERSION = ${TRAVIS_PYTHON_VERSION}"
+    echo "TAG = ${TRAVIS_TAG}"
+    if [[ $TRAVIS_PYTHON_VERSION =~ ^3\.6+$ ]]; then
+        echo "Version matched for release"
         if [[ $TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "Releasing tag $TRAVIS_TAG with Python $TRAVIS_PYTHON_VERSION"
             release || return 1
