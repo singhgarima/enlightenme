@@ -26,9 +26,3 @@ class TestReadme(unittest.TestCase):
 
         self.assertNotEqual(0, result.exit_code)
         self.assertIn("Error: No such sub-command supported for readme: invalid", result.output)
-
-    def test_invalid_command(self):
-        result = self._runner.invoke(self._cli, ["invalid"])
-
-        self.assertNotEqual(0, result.exit_code)
-        self.assertIn("Error: No such sub-command supported for readme: invalid", result.output)

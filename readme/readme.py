@@ -14,9 +14,9 @@ class Readme(click.Group):
 
     def get_command(self, ctx: click.Context, cmd_name: str):
         try:
-            mod = __import__('readme.commands', fromlist=[cmd_name])
+            mod = __import__('readme.commands.' + cmd_name + '_command', fromlist=[cmd_name])
             return getattr(mod, cmd_name)
-        except AttributeError:
+        except (ModuleNotFoundError, AttributeError):
             ctx.fail('No such sub-command supported for readme: %s' % cmd_name)
 
 
