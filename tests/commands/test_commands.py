@@ -56,7 +56,7 @@ class TestSource(unittest.TestCase):
         mock_object.fetch_and_format.assert_called_once_with()
 
     @mock.patch('readme.commands.helpers.fetcher.Fetcher.fetch_and_format')
-    @mock.patch('readme.news_output.NewsOutput')
+    @mock.patch('readme.news.news_output.NewsOutput')
     def test_source_when_typical_then_should_display_stories(self, mock_output, mock_fetch_and_format):
         news_list = [(create_news()), (create_news())]
         mock_fetch_and_format.return_value = news_list

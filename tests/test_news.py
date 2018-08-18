@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from readme.news import News
+from readme.news.news import News
 
 
 class TestNews(unittest.TestCase):

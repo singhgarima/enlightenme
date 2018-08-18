@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from typing import List
 
-from readme.news import News
+from readme.news.news import News
 from readme.utils import camel_case
 
 

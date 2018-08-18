@@ -2,7 +2,7 @@ import unittest
 from unittest import mock
 from unittest.mock import call
 
-from readme.news_output import NewsOutput
+from readme.news.news_output import NewsOutput
 
 
 class TestNewsOutput(unittest.TestCase):

@@ -1,8 +1,8 @@
 import click
 
-from readme import news_output
+from readme.news import news_output
 from readme.commands.helpers import fetcher
-from readme.news_formatters import NewsFormatter
+from readme.news.news_formatters import NewsFormatter
 from readme.readme import cli
 from readme.sources import Source
 

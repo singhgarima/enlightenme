@@ -1,6 +1,6 @@
 import unittest
 
-from readme.news_formatters import NewsFormatter, ListNewsFormatter, HtmlNewsFormatter
+from readme.news.news_formatters import NewsFormatter, ListNewsFormatter, HtmlNewsFormatter
 from tests.fixtures import create_news
 
 

@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractclassmethod, abstractmethod
 from typing import List, Optional
 
-from readme.news import News
+from readme.news.news import News
 from readme.utils import import_submodules
 
 

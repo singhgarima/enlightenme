@@ -29,7 +29,7 @@ class TestFetcher(unittest.TestCase):
         invalid_fetcher = Fetcher('invalid', 'list')
         self.assertFalse(invalid_fetcher.valid())
 
-    @mock.patch('readme.news_formatters.ListNewsFormatter')
+    @mock.patch('readme.news.news_formatters.ListNewsFormatter')
     @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
     def test_fetch_and_format_when_typical_then_should_fetch_from_hacker_news_source(self, mock_fetch, _):
         news_list = ['news1', 'news2']
@@ -40,7 +40,7 @@ class TestFetcher(unittest.TestCase):
         self.assertEqual(news_list, self._fetcher._news_list)
         mock_fetch.assert_called_once_with(keywords=self._keywords)
 
-    @mock.patch('readme.news_formatters.ListNewsFormatter')
+    @mock.patch('readme.news.news_formatters.ListNewsFormatter')
     @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
     def test_fetch_and_format_when_typical_then_should_use_list_formatter_to_format_news(self, mock_fetch,
                                                                                          mock_formatter):
@@ -51,7 +51,7 @@ class TestFetcher(unittest.TestCase):
 
         mock_formatter.assert_has_calls([call(news_list), call().format()])
 
-    @mock.patch('readme.news_formatters.HtmlNewsFormatter')
+    @mock.patch('readme.news.news_formatters.HtmlNewsFormatter')
     @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
     def test_fetch_and_format_when_format_is_html_then_should_use_html_formatter_to_format_news(self, mock_fetch,
                                                                                                 mock_formatter):
@@ -63,7 +63,7 @@ class TestFetcher(unittest.TestCase):
 
         mock_formatter.assert_has_calls([call(news_list), call().format()])
 
-    @mock.patch('readme.news_formatters.ListNewsFormatter')
+    @mock.patch('readme.news.news_formatters.ListNewsFormatter')
     @mock.patch('readme.sources.hacker_news.HackerNews.fetch')
     def test_fetch_and_format_when_no_keywords_are_passed_then_should_pass_keywords_to_source(self, mock_fetch,
                                                                                            mock_formatter):

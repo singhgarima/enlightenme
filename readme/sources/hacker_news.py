@@ -3,7 +3,7 @@ from typing import List
 
 import requests
 
-from readme.news import News
+from readme.news.news import News
 from readme.sources import Source
 
 

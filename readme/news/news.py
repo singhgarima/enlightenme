@@ -2,7 +2,7 @@ from datetime import datetime
 
 
 class News:
-    def __init__(self, title, published_at: datetime, body: str = None, url: str = None, tags=None):
+    def __init__(self, title, published_at: datetime = None, body: str = None, url: str = None, tags=None):
         if tags is None:
             tags = []
         self.title = title
