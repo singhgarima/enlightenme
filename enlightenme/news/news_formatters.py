@@ -36,10 +36,13 @@ class ListNewsFormatter(NewsFormatter):
         output = "\n"
         for index, news in enumerate(self.news_list):
             output += "\t%d. Title: %s\n" % (index + 1, news.title)
-            output += "\t    Published At: %s\n" % news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ')
+            published_at = news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ')
+            output += "\t    Published At: %s\n" % published_at
 
-            if news.url: output += "\t    URL: %s\n" % news.url
-            if news.tags: output += "\t    Tags: %s\n" % ", ".join(news.tags)
+            if news.url:
+                output += "\t    URL: %s\n" % news.url
+            if news.tags:
+                output += "\t    Tags: %s\n" % ", ".join(news.tags)
         return output
 
 

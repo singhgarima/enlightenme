@@ -14,12 +14,14 @@ class Source:
 
     @classmethod
     def get_all_sources(cls) -> List[str]:
-        return [kls.name() for kls in cls._sub_classes() if kls.name() is not None]
+        return [kls.name() for kls in cls._sub_classes()
+                if kls.name() is not None]
 
     @classmethod
     def get_source(cls, source_name: str) -> Optional[type]:
         try:
-            return next(kls for kls in cls._sub_classes() if kls.name() == source_name)
+            return next(kls for kls in cls._sub_classes()
+                        if kls.name() == source_name)
         except StopIteration:
             return None
 

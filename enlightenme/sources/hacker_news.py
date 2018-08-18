@@ -13,7 +13,7 @@ class HackerNews(Source):
     """
     URL = "https://hacker-news.firebaseio.com/"
 
-    LATEST_NUMBER_OF_STORIES_TO_FETCH = 10
+    NUMBER_OF_STORIES = 10
     MAX_STORIES_TO_LOOP = 100
 
     @classmethod
@@ -25,7 +25,8 @@ class HackerNews(Source):
         if keywords:
             return self._fetch_latest_stories_with_keywords(stories, keywords)
         else:
-            return self._fetch_latest_stories(stories, number=self.LATEST_NUMBER_OF_STORIES_TO_FETCH)
+            return self._fetch_latest_stories(stories,
+                                              number=self.NUMBER_OF_STORIES)
 
     def _fetch_new_stories(self):
         response = requests.get(self.URL + "v0/newstories.json")
@@ -42,7 +43,7 @@ class HackerNews(Source):
             news = self._fetch_story(story_id)
             if news.contains_any_keywords(keywords):
                 interesting_news.append(news)
-            if len(interesting_news) == self.LATEST_NUMBER_OF_STORIES_TO_FETCH:
+            if len(interesting_news) == self.NUMBER_OF_STORIES:
                 break
         return interesting_news
 
@@ -51,5 +52,8 @@ class HackerNews(Source):
         if response.status_code == 200:
             story_details = response.json()
             published_at = datetime.fromtimestamp(story_details.get("time"))
-            return News(story_details.get("title"), published_at, story_details.get("text"), story_details.get("url"))
+            return News(story_details.get("title"),
+                        published_at,
+                        story_details.get("text"),
+                        story_details.get("url"))
         response.raise_for_status()

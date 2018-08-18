@@ -3,17 +3,18 @@ set -eo pipefail
 
 function lint () {
     echo "Checking the code syntax"
-    pycodestyle --first enlightenme
+    pipenv run pycodestyle --first enlightenme
 }
 
 function build () {
     echo "Building the package"
-    python setup.py build
+    pipenv run python setup.py build
 }
 
 function run-test () {
     echo "Running the tests"
-    python setup.py test
+    pipenv run coverage run setup.py test
+    pipenv run coverage report
 }
 
 function main () {

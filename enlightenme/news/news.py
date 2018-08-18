@@ -2,7 +2,8 @@ from datetime import datetime
 
 
 class News:
-    def __init__(self, title, published_at: datetime = None, body: str = None, url: str = None, tags=None):
+    def __init__(self, title, published_at: datetime = None,
+                 body: str = None, url: str = None, tags=None):
         if tags is None:
             tags = []
         self.title = title
@@ -20,5 +21,6 @@ class News:
     def has_any_keyword(self, keyword: str) -> bool:
         upper_case_keyword = keyword.upper()
         return (self.title and upper_case_keyword in self.title.upper()) or \
-               (self.tags and upper_case_keyword in [tag.upper() for tag in self.tags]) or \
+               (self.tags and upper_case_keyword in
+                [tag.upper() for tag in self.tags]) or \
                (self.body and upper_case_keyword in self.body.upper())
