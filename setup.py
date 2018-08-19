@@ -1,7 +1,7 @@
 import json
 import os
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -42,9 +42,7 @@ setup(
     install_requires=install_requires,
     tests_require=tests_require,
 
-    packages = [
-        'enlightenme'
-    ],
+    packages = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     entry_points='''
         [console_scripts]
         enlightenme=enlightenme.enlightenme:cli
