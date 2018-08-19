@@ -59,6 +59,7 @@ class CsvNewsFormatter(NewsFormatter):
             if index == 0:
                 writer.writerow(news.__dict__.keys())
             news_dict = deepcopy(news.__dict__)
-            news_dict['published_at'] = news_dict['published_at'].strftime(DATE_TIME_STR_FORMAT)
+            news_dict['published_at'] = news_dict['published_at']. \
+                strftime(DATE_TIME_STR_FORMAT)
             writer.writerow(news_dict.values())
         return output.getvalue()
