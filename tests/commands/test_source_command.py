@@ -18,8 +18,8 @@ class TestSource(unittest.TestCase):
 
         self.assertEqual(0, result.exit_code)
         self.assertIn("get latest news from different sources", result.output)
-        self.assertIn("--format [list|html]  Displays news in a format", result.output)
-        self.assertIn("--output TEXT         Write to FILE instead of stdout", result.output)
+        self.assertIn("--format [list|csv]  Displays news in a format", result.output)
+        self.assertIn("--output TEXT        Write to FILE instead of stdout", result.output)
 
     @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher.fetch_and_format')
     @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher.valid')

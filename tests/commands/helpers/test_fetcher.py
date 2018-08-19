@@ -51,14 +51,14 @@ class TestFetcher(unittest.TestCase):
 
         mock_formatter.assert_has_calls([call(news_list), call().format()])
 
-    @mock.patch('enlightenme.news.news_formatters.HtmlNewsFormatter')
+    @mock.patch('enlightenme.news.news_formatters.CsvNewsFormatter')
     @mock.patch('enlightenme.sources.hacker_news.HackerNews.fetch')
     def test_fetch_and_format_when_format_is_html_then_should_use_html_formatter_to_format_news(self, mock_fetch,
                                                                                                 mock_formatter):
         news_list = ['news1', 'news2']
         mock_fetch.return_value = news_list
 
-        self._fetcher._format_type = "html"
+        self._fetcher._format_type = "csv"
         self._fetcher.fetch_and_format()
 
         mock_formatter.assert_has_calls([call(news_list), call().format()])

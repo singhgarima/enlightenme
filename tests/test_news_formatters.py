@@ -1,6 +1,6 @@
 import unittest
 
-from enlightenme.news.news_formatters import NewsFormatter, ListNewsFormatter, HtmlNewsFormatter
+from enlightenme.news.news_formatters import NewsFormatter, ListNewsFormatter, CsvNewsFormatter
 from tests.fixtures import create_news
 
 
@@ -79,15 +79,25 @@ class TestListNewsFormatter(unittest.TestCase):
             ), output)
 
 
-class TestHtmlNewsFormatter(unittest.TestCase):
+class TestCsvNewsFormatter(unittest.TestCase):
     def setUp(self):
         self._news = create_news()
         self._news_list = [self._news]
-        self._formatter = HtmlNewsFormatter(self._news_list)
+        self._formatter = CsvNewsFormatter(self._news_list)
 
     def test_initialize(self):
         self.assertIsInstance(self._formatter, NewsFormatter)
         self.assertEqual(self._news_list, self._formatter.news_list)
 
     def test_format(self):
-        self.assertIsNone(self._formatter.format())
+        result = self._formatter.format().split("\n")
+
+        self.assertIn('"title","published_at","body","url","tags"', result[0])
+        self.assertIn('"' + self._news.title +
+                      '","' +
+                      self._news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ') +
+                      '","' +
+                      str(self._news.body or '') +
+                      '","' +
+                      str(self._news.url or '') +
+                      '","[]"', result[1])
