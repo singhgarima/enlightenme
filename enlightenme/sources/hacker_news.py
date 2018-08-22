@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 import requests
 
@@ -45,7 +45,7 @@ class HackerNews(Source):
                 latest_news.append(news)
         return latest_news
 
-    def _fetch_latest_stories_with_keywords(self, keywords):
+    def _fetch_latest_stories_with_keywords(self, keywords: List) -> List[News]:
         interesting_news = []
         for index, story_id in enumerate(self._story_ids):
             news = self._fetch_story(story_id)
@@ -56,7 +56,7 @@ class HackerNews(Source):
                     break
         return interesting_news
 
-    def _fetch_story(self, story_id):
+    def _fetch_story(self, story_id) -> Optional[News]:
         response = requests.get(self.URL + "v0/item/%s.json" % str(story_id))
         if response.status_code == 200:
             story_details = response.json()
@@ -65,7 +65,7 @@ class HackerNews(Source):
             return None
         response.raise_for_status()
 
-    def _create_new_from_story_details(self, story_details):
+    def _create_new_from_story_details(self, story_details) -> News:
         published_at = datetime.fromtimestamp(story_details.get("time"))
         return News(story_details.get("title"),
                     published_at,
