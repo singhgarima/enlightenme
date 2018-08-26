@@ -1,7 +1,7 @@
 import click
 
 
-class Readme(click.Group):
+class Enlightenme(click.Group):
     """
     collect news from your favorite channels
     """
@@ -22,7 +22,7 @@ class Readme(click.Group):
                      cmd_name)
 
 
-@click.group(cls=Readme, help=Readme.help)
+@click.group(cls=Enlightenme, help=Enlightenme.help)
 @click.pass_context
 def cli(ctx: click.Context):
     pass

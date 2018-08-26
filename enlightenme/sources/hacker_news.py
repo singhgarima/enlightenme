@@ -45,7 +45,8 @@ class HackerNews(Source):
                 latest_news.append(news)
         return latest_news
 
-    def _fetch_latest_stories_with_keywords(self, keywords: List) -> List[News]:
+    def _fetch_latest_stories_with_keywords(self, keywords: List) \
+            -> List[News]:
         interesting_news = []
         for index, story_id in enumerate(self._story_ids):
             news = self._fetch_story(story_id)

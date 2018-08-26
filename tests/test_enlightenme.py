@@ -5,7 +5,7 @@ from click.testing import CliRunner
 from enlightenme.enlightenme import cli
 
 
-class TestReadme(unittest.TestCase):
+class TestEnlightenme(unittest.TestCase):
     def setUp(self):
         self._runner = CliRunner()
         self._cli = cli

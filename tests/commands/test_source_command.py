@@ -22,9 +22,8 @@ class TestSource(unittest.TestCase):
         self.assertIn("--output TEXT        Write to FILE instead of stdout", result.output)
 
     @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher.fetch_and_format')
-    @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher.valid')
-    def test_source_when_typical_then_should_display_help_text(self, mock_valid, _):
-        mock_valid.return_value = True
+    @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher.valid', return_value = True)
+    def test_source_when_typical_then_should_display_help_text(self, _, __):
 
         source_name = "hacker-news"
         result = self._runner.invoke(self._cli, ["source", source_name])
