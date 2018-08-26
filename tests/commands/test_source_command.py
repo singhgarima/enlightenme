@@ -21,8 +21,8 @@ class TestSource(unittest.TestCase):
         self.assertIn("--format [list|csv]  Displays news in a format", result.output)
         self.assertIn("--output TEXT        Write to FILE instead of stdout", result.output)
 
-    @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher.fetch_and_format')
-    @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher.valid', return_value = True)
+    @mock.patch('enlightenme.news.news_manager.NewsManager.fetch_and_format')
+    @mock.patch('enlightenme.news.news_manager.NewsManager.valid', return_value = True)
     def test_source_when_typical_then_should_display_help_text(self, _, __):
 
         source_name = "hacker-news"
@@ -31,8 +31,8 @@ class TestSource(unittest.TestCase):
         self.assertEqual(0, result.exit_code)
         self.assertIn("Fetching news from source: %s" % source_name, result.output)
 
-    @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher.valid')
-    @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher.fetch_and_format')
+    @mock.patch('enlightenme.news.news_manager.NewsManager.valid')
+    @mock.patch('enlightenme.news.news_manager.NewsManager.fetch_and_format')
     def test_source_when_typical_then_fetch_and_format_using_fetcher(self, mock_fetch_and_format, mock_valid):
         mock_valid.return_value = True
 
@@ -41,7 +41,7 @@ class TestSource(unittest.TestCase):
 
         mock_fetch_and_format.assert_called_once_with()
 
-    @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher')
+    @mock.patch('enlightenme.news.news_manager.NewsManager')
     def test_source_when_keywords_provided_then_fetch_and_format_using_fetcher(self, mock_fetcher):
         mock_object = mock.Mock()
         mock_fetcher.return_value = mock_object
@@ -54,7 +54,7 @@ class TestSource(unittest.TestCase):
         mock_fetcher.assert_called_once_with(source_name, format_type='list', keywords=["python", "chaos"])
         mock_object.fetch_and_format.assert_called_once_with()
 
-    @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher.fetch_and_format')
+    @mock.patch('enlightenme.news.news_manager.NewsManager.fetch_and_format')
     @mock.patch('enlightenme.news.news_output.NewsOutput')
     def test_source_when_typical_then_should_display_stories(self, mock_output, mock_fetch_and_format):
         news_list = [(create_news()), (create_news())]
@@ -71,7 +71,7 @@ class TestSource(unittest.TestCase):
         self.assertNotEqual(0, result.exit_code)
         self.assertIn("Error: Missing argument \"source_name\".", result.output)
 
-    @mock.patch('enlightenme.commands.helpers.fetcher.Fetcher.valid')
+    @mock.patch('enlightenme.news.news_manager.NewsManager.valid')
     def test_when_invalid_source(self, mock_valid):
         mock_valid.return_value = False
 

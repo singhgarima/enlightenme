@@ -1,8 +1,7 @@
 import click
 
-from enlightenme.commands.helpers import fetcher
 from enlightenme.enlightenme import cli
-from enlightenme.news import news_output
+from enlightenme.news import news_output, news_manager
 from enlightenme.news.news_formatters import NewsFormatter
 from enlightenme.sources import Source
 
@@ -25,9 +24,9 @@ def source(ctx: click.Context, source_name: str, format: str,
         list_sources()
     else:
         keywords = keywords.split(",") if keywords else None
-        news_fetchers = fetcher.Fetcher(source_name,
-                                        format_type=format,
-                                        keywords=keywords)
+        news_fetchers = news_manager.NewsManager(source_name,
+                                                 format_type=format,
+                                                 keywords=keywords)
         if not news_fetchers.valid():
             ctx.fail("Invalid source supplied. See --help")
 

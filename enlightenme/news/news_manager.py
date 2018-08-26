@@ -5,7 +5,7 @@ from enlightenme.news.news_formatters import NewsFormatter
 from enlightenme.sources import Source
 
 
-class Fetcher:
+class NewsManager:
     def __init__(self, source_name: str,
                  format_type: str = NewsFormatter.DEFAULT_FORMAT,
                  keywords: List = None):
