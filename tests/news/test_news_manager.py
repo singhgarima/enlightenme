@@ -22,13 +22,6 @@ class TestNewsManager(unittest.TestCase):
         self.assertEqual('list', self._manager._format_type)
         self.assertEqual(None, self._manager._keywords)
 
-    def test_valid(self):
-        self.assertTrue(self._manager.valid())
-
-    def test_valid_when_invalid_source_then_is_false(self):
-        invalid_fetcher = NewsManager('invalid', 'list')
-        self.assertFalse(invalid_fetcher.valid())
-
     @mock.patch('enlightenme.news.news_formatters.ListNewsFormatter')
     @mock.patch('enlightenme.sources.hacker_news.HackerNews.fetch')
     def test_fetch_and_format_when_typical_then_should_fetch_from_hacker_news_source(self, mock_fetch, _):

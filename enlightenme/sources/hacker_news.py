@@ -16,6 +16,8 @@ class HackerNews(Source):
     NUMBER_OF_STORIES = 10
     MAX_STORIES_TO_LOOP = 100
 
+    HELP = "Source: hacker-news (https://news.ycombinator.com/)"
+
     @classmethod
     def name(cls):
         return "hacker-news"
@@ -40,7 +42,7 @@ class HackerNews(Source):
     def _fetch_latest_stories(self, number=20) -> List[News]:
         latest_news = []
         for story_id in self._story_ids[0:number]:
-            news = self._fetch_story(story_id)
+            news = HackerNewsStory(story_id).fetch()
             if news is not None:
                 latest_news.append(news)
         return latest_news
@@ -49,7 +51,7 @@ class HackerNews(Source):
             -> List[News]:
         interesting_news = []
         for index, story_id in enumerate(self._story_ids):
-            news = self._fetch_story(story_id)
+            news = HackerNewsStory(story_id).fetch()
             if news:
                 if news.contains_any_keywords(keywords):
                     interesting_news.append(news)
@@ -57,18 +59,24 @@ class HackerNews(Source):
                     break
         return interesting_news
 
-    def _fetch_story(self, story_id) -> Optional[News]:
-        response = requests.get(self.URL + "v0/item/%s.json" % str(story_id))
+
+class HackerNewsStory:
+    def __init__(self, story_id: int, story_details: dict = None):
+        self._story_id = story_id
+        self._story_details = story_details
+
+    def fetch(self) -> Optional[News]:
+        response = requests.get(HackerNews.URL + "v0/item/%s.json" % str(self._story_id))
         if response.status_code == 200:
-            story_details = response.json()
-            if story_details is not None:
-                return self._create_new_from_story_details(story_details)
+            self._story_details = response.json()
+            if self._story_details is not None:
+                return self._create_new_from_story_details()
             return None
         response.raise_for_status()
 
-    def _create_new_from_story_details(self, story_details) -> News:
-        published_at = datetime.fromtimestamp(story_details.get("time"))
-        return News(story_details.get("title"),
+    def _create_new_from_story_details(self) -> News:
+        published_at = datetime.fromtimestamp(self._story_details.get("time"))
+        return News(self._story_details.get("title"),
                     published_at,
-                    story_details.get("text"),
-                    story_details.get("url"))
+                    self._story_details.get("text"),
+                    self._story_details.get("url"))

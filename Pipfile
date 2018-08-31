@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 click = "==6.7"
 requests = "==2.19.1"
+praw = "==6.0.0"
 
 [dev-packages]
 coverage = "==4.5.1"

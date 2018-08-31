@@ -1,40 +1,37 @@
 import click
 
-from enlightenme.enlightenme import cli
-from enlightenme.news import news_output, news_manager
-from enlightenme.news.news_formatters import NewsFormatter
+from enlightenme.news import news_manager, news_output
 from enlightenme.sources import Source
 
 
-@cli.command(
-    help="get latest news from different sources"
-)
-@click.argument('source_name')
-@click.option('--format', '-f', default=NewsFormatter.DEFAULT_FORMAT,
-              type=click.Choice(NewsFormatter.FORMAT_OPTIONS),
-              help="Displays news in a format")
-@click.option('--output', '-o', required=False,
-              help="Write to FILE instead of stdout")
-@click.option('--keywords', '-k', required=False,
-              help="Topics or Keywords that interest you (e.g. python,golang)")
-@click.pass_context
-def source(ctx: click.Context, source_name: str, format: str,
-           output: str = None, keywords: str = None):
-    if source_name == "list":
-        list_sources()
-    else:
-        keywords = keywords.split(",") if keywords else None
-        news_fetchers = news_manager.NewsManager(source_name,
-                                                 format_type=format,
-                                                 keywords=keywords)
-        if not news_fetchers.valid():
-            ctx.fail("Invalid source supplied. See --help")
+class SourceCommand(click.Group):
+    help = "helps getting latest news from specified sources"
 
-        click.echo("Fetching news from source: %s" % source_name)
-        content = news_fetchers.fetch_and_format()
-        news_output.NewsOutput(content).write_to(file_name=output)
+    def list_commands(self, ctx):
+        return [name for name in Source.get_all_sources()]
 
+    def get_command(self, ctx: click.Context, cmd_name):
+        if cmd_name not in self.list_commands(ctx):
+            ctx.fail("Invalid source %s supplied. See --help" % cmd_name)
 
-def list_sources():
-    click.echo("Currently the plugin supports the following sources")
-    [click.echo("* %s" % name) for name in Source.get_all_sources()]
+        @click.pass_context
+        def callback(*args, **kwargs):
+            keywords = ctx.params.get('keywords', "")
+            format_type = ctx.params.get('format')
+            output = ctx.params.get('output')
+
+            keywords = keywords.split(",") if keywords else None
+
+            news_fetchers = news_manager.NewsManager(cmd_name,
+                                                     format_type=format_type,
+                                                     keywords=keywords)
+
+            click.echo("Fetching news from source: %s" % cmd_name)
+            content = news_fetchers.fetch_and_format()
+            news_output.NewsOutput(content).write_to(file_name=output)
+
+        source_class = Source.get_source(cmd_name)
+        return click.Command(name=cmd_name,
+                             callback=callback,
+                             help=source_class.HELP,
+                             short_help=source_class.HELP)

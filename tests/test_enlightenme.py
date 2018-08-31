@@ -10,11 +10,17 @@ class TestEnlightenme(unittest.TestCase):
         self._runner = CliRunner()
         self._cli = cli
 
+    def test_base_command(self):
+        result = self._runner.invoke(self._cli)
+
+        self.assertEqual(0, result.exit_code)
+        self.assertIn("collect news/updates from your favorite tech channels", result.output)
+
     def test_help(self):
         result = self._runner.invoke(self._cli, ["--help"])
 
         self.assertEqual(0, result.exit_code)
-        self.assertIn("collect news from your favorite channels", result.output)
+        self.assertIn("collect news/updates from your favorite tech channels", result.output)
 
     def test_list_of_commands(self):
         result = self._runner.invoke(self._cli, ["--help"])
@@ -25,4 +31,4 @@ class TestEnlightenme(unittest.TestCase):
         result = self._runner.invoke(self._cli, ["invalid"])
 
         self.assertNotEqual(0, result.exit_code)
-        self.assertIn("Error: No such sub-command supported for enlightenme: invalid", result.output)
+        self.assertIn('Error: No such command "invalid".', result.output)

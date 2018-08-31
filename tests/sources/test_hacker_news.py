@@ -1,3 +1,4 @@
+import datetime
 import json
 import random
 import unittest
@@ -5,7 +6,8 @@ import unittest
 import requests_mock
 from requests import HTTPError
 
-from enlightenme.sources.hacker_news import HackerNews
+from enlightenme.news.news import News
+from enlightenme.sources.hacker_news import HackerNews, HackerNewsStory
 from tests.fixtures import hacker_news_story
 
 
@@ -83,3 +85,38 @@ class TestHackerNews(unittest.TestCase):
     @staticmethod
     def _get_item_url_for_story(story_id):
         return "https://hacker-news.firebaseio.com/v0/item/" + str(story_id) + ".json"
+
+
+class HackerNewsStoryTest(unittest.TestCase):
+    def test_initialize(self):
+        story = HackerNewsStory(123)
+
+        self.assertEqual(123, story._story_id)
+        self.assertEqual(None, story._story_details)
+
+    def test_initialize_with_story_details_specified(self):
+        story_id = 123
+        details = {'title': 'test'}
+
+        story = HackerNewsStory(story_id, details)
+
+        self.assertEqual(story_id, story._story_id)
+        self.assertEqual(details, story._story_details)
+
+    def test_fetch(self):
+        story_id = 12
+        title = 'Show HN: NES Party – Online Multiplayer NES Emulator Using WebRTC'
+        url = 'https://nes.party'
+        with requests_mock.mock() as m:
+            m.get("https://hacker-news.firebaseio.com/v0/item/" + str(story_id) + ".json",
+                  text=json.dumps(hacker_news_story(story_id=story_id, author='dsr12', title=title, url=url)))
+
+            story = HackerNewsStory(story_id)
+            result = story.fetch()
+
+        self.assertIsInstance(result, News)
+        self.assertEqual(title, result.title)
+        self.assertEqual([], result.tags)
+        self.assertEqual(datetime.datetime(2018, 8, 9, 8, 20, 11), result.published_at)
+        self.assertEqual(url, result.url)
+        self.assertEqual(None, result.body)

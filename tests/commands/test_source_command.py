@@ -8,7 +8,7 @@ from enlightenme.enlightenme import cli
 from tests.fixtures import create_news
 
 
-class TestSource(unittest.TestCase):
+class TestSourceCommand(unittest.TestCase):
     def setUp(self):
         self._runner = CliRunner()
         self._cli = cli
@@ -16,26 +16,23 @@ class TestSource(unittest.TestCase):
     def test_help(self):
         result = self._runner.invoke(self._cli, ["source", "--help"])
 
-        self.assertEqual(0, result.exit_code)
-        self.assertIn("get latest news from different sources", result.output)
-        self.assertIn("--format [list|csv]  Displays news in a format", result.output)
-        self.assertIn("--output TEXT        Write to FILE instead of stdout", result.output)
+        self._assert_result_contains_help_text(result)
+
+    def test_when_source_command_executed_without_source_name(self):
+        result = self._runner.invoke(self._cli, ["source"])
+
+        self._assert_result_contains_help_text(result)
 
     @mock.patch('enlightenme.news.news_manager.NewsManager.fetch_and_format')
-    @mock.patch('enlightenme.news.news_manager.NewsManager.valid', return_value = True)
-    def test_source_when_typical_then_should_display_help_text(self, _, __):
-
+    def test_source_when_typical_then_should_display_help_text(self, _):
         source_name = "hacker-news"
         result = self._runner.invoke(self._cli, ["source", source_name])
 
         self.assertEqual(0, result.exit_code)
         self.assertIn("Fetching news from source: %s" % source_name, result.output)
 
-    @mock.patch('enlightenme.news.news_manager.NewsManager.valid')
     @mock.patch('enlightenme.news.news_manager.NewsManager.fetch_and_format')
-    def test_source_when_typical_then_fetch_and_format_using_fetcher(self, mock_fetch_and_format, mock_valid):
-        mock_valid.return_value = True
-
+    def test_source_when_typical_then_fetch_and_format_using_fetcher(self, mock_fetch_and_format):
         source_name = "hacker-news"
         self._runner.invoke(self._cli, ["source", source_name])
 
@@ -49,7 +46,7 @@ class TestSource(unittest.TestCase):
         mock_object.fetch_and_format.return_value = None
 
         source_name = "hacker-news"
-        self._runner.invoke(self._cli, ["source", source_name, "--keywords", "python,chaos"])
+        self._runner.invoke(self._cli, ["source", "--keywords", "python,chaos", source_name])
 
         mock_fetcher.assert_called_once_with(source_name, format_type='list', keywords=["python", "chaos"])
         mock_object.fetch_and_format.assert_called_once_with()
@@ -65,29 +62,13 @@ class TestSource(unittest.TestCase):
 
         mock_output.assert_has_calls([call(news_list), call().write_to(file_name=None)])
 
-    def test_when_missing_source(self):
-        result = self._runner.invoke(self._cli, ["source"])
-
-        self.assertNotEqual(0, result.exit_code)
-        self.assertIn("Error: Missing argument \"source_name\".", result.output)
-
-    @mock.patch('enlightenme.news.news_manager.NewsManager.valid')
-    def test_when_invalid_source(self, mock_valid):
-        mock_valid.return_value = False
-
+    def test_when_invalid_source(self):
         result = self._runner.invoke(self._cli, ["source", "invalid"])
 
-        self.assertIn("Invalid source supplied. See --help", result.output)
+        self.assertIn("Error: Invalid source invalid supplied. See --help", result.output)
 
-
-class TestSourceList(unittest.TestCase):
-    def setUp(self):
-        self._runner = CliRunner()
-        self._cli = cli
-
-    def test_typical(self):
-        result = self._runner.invoke(self._cli, ["source", "list"])
-        self.assertIn("Currently the plugin supports the following sources", result.output)
-        self.assertIn("hacker-new", result.output)
-
-
+    def _assert_result_contains_help_text(self, result):
+        self.assertEqual(0, result.exit_code)
+        self.assertIn("helps getting latest news from specified sources", result.output)
+        self.assertIn("--format [list|csv]  Displays news in a format", result.output)
+        self.assertIn("--output TEXT        Write to FILE instead of stdout", result.output)

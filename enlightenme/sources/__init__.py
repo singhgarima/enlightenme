@@ -7,6 +7,7 @@ from enlightenme.utils import import_submodules
 
 class Source:
     __metaclass__ = ABCMeta
+    HELP = None
 
     @abstractclassmethod
     def name(self):

@@ -5,13 +5,15 @@ from typing import Dict
 from enlightenme.news.news import News
 
 
-def hacker_news_story(story_id: int, author: str = None, text: str = None) -> Dict:
+def hacker_news_story(story_id: int, title: str = None, author: str = None, text: str = None, url: str = None) -> Dict:
     story_id = randint(1, 100000) if story_id is None else story_id
     author = 'author' + str(randint(1, 10)) if author is None else author
+    title = 'Random Title: ' + str(randint(1, 10)) if title is None else title
+    url = 'https://www.url.org/' + str(randint(1, 10)) if url is None else url
 
     story = {'by': author, 'descendants': 42, 'id': story_id, 'kids': [], 'score': 183, 'time': 1533774011,
-             'title': 'Show HN: NES Party – Online Multiplayer NES Emulator Using WebRTC', 'type': 'story',
-             'url': 'https://nes.party'}
+             'title': title, 'type': 'story',
+             'url': url}
     if text:
         story['text'] = text
     return story

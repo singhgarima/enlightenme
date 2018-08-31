@@ -14,9 +14,6 @@ class NewsManager:
         self._keywords = keywords
         self._news_list = []
 
-    def valid(self):
-        return self._source_name in Source.get_all_sources()
-
     def fetch_and_format(self) -> str:
         self._fetch()
         return self._format()
