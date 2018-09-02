@@ -1,6 +1,8 @@
 from abc import ABCMeta, abstractclassmethod, abstractmethod
 from typing import List, Optional
 
+import click
+
 from enlightenme.news.news import News
 from enlightenme.utils import import_submodules
 
@@ -25,6 +27,10 @@ class Source:
                         if kls.name() == source_name)
         except StopIteration:
             return None
+
+    @classmethod
+    def params(cls) -> List[click.Parameter]:
+        return []
 
     @abstractmethod
     def fetch(self, keywords: List = None) -> List[News]:

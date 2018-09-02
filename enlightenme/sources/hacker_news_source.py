@@ -7,10 +7,7 @@ from enlightenme.news.news import News
 from enlightenme.sources import Source
 
 
-class HackerNews(Source):
-    """
-    Source: hacker-news (https://news.ycombinator.com/)
-    """
+class HackerNewsSource(Source):
     URL = "https://hacker-news.firebaseio.com/"
 
     NUMBER_OF_STORIES = 10
@@ -23,7 +20,7 @@ class HackerNews(Source):
         return "hacker-news"
 
     def __init__(self) -> None:
-        super(HackerNews, self).__init__()
+        super(HackerNewsSource, self).__init__()
         self._story_ids = []
 
     def fetch(self, keywords: List = None) -> List[News]:
@@ -66,7 +63,8 @@ class HackerNewsStory:
         self._story_details = story_details
 
     def fetch(self) -> Optional[News]:
-        response = requests.get(HackerNews.URL + "v0/item/%s.json" % str(self._story_id))
+        response = requests.get(HackerNewsSource.URL +
+                                "v0/item/%s.json" % str(self._story_id))
         if response.status_code == 200:
             self._story_details = response.json()
             if self._story_details is not None:

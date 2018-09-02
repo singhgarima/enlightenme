@@ -7,13 +7,13 @@ import requests_mock
 from requests import HTTPError
 
 from enlightenme.news.news import News
-from enlightenme.sources.hacker_news import HackerNews, HackerNewsStory
+from enlightenme.sources.hacker_news_source import HackerNewsSource, HackerNewsStory
 from tests.fixtures import hacker_news_story
 
 
-class TestHackerNews(unittest.TestCase):
+class TestHackerNewsSource(unittest.TestCase):
     def setUp(self):
-        self._source = HackerNews()
+        self._source = HackerNewsSource()
 
     def test_initialize(self):
         self.assertEqual([], self._source._story_ids)
@@ -54,7 +54,7 @@ class TestHackerNews(unittest.TestCase):
 
     def test_fetch_when_hacker_news_api_is_unavailable(self):
         with requests_mock.mock() as m:
-            m.get(HackerNews.URL + "v0/newstories.json", text='Not Found', status_code=404)
+            m.get(HackerNewsSource.URL + "v0/newstories.json", text='Not Found', status_code=404)
 
             with self.assertRaises(HTTPError) as error:
                 self._source.fetch()
@@ -79,7 +79,7 @@ class TestHackerNews(unittest.TestCase):
             text = "Test Test"
             if index % 2 == 0:
                 text = text + " " + keywords[random.randint(0, len(keywords) - 1)]
-            item_url = TestHackerNews._get_item_url_for_story(story_id)
+            item_url = TestHackerNewsSource._get_item_url_for_story(story_id)
             m.get(item_url, text=json.dumps(hacker_news_story(story_id=story_id, text=text)))
 
     @staticmethod

@@ -1,18 +1,24 @@
 import unittest
 
 from enlightenme.sources import Source
-from enlightenme.sources.hacker_news import HackerNews
+from enlightenme.sources.hacker_news_source import HackerNewsSource
 
 
 class TestSource(unittest.TestCase):
     def test_name(self):
-        self.assertEqual(None, Source().name())
+        self.assertEqual(None, Source.name())
+
+    def test_params(self):
+        self.assertEqual([], Source.params())
 
     def test_get_all_sources(self):
-        self.assertEqual(['hacker-news'], Source.get_all_sources())
+        sources = Source.get_all_sources()
+        self.assertEqual(2, len(sources))
+        self.assertIn('hacker-news', sources)
+        self.assertIn('reddit', sources)
 
     def test_get_source(self):
-        self.assertEqual(HackerNews, Source.get_source('hacker-news'))
+        self.assertEqual(HackerNewsSource, Source.get_source('hacker-news'))
 
     def test_get_source_when_invalid_source_name(self):
         self.assertEqual(None, Source.get_source('invalid-name'))
