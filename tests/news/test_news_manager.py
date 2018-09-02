@@ -8,10 +8,15 @@ from enlightenme.news.news_manager import NewsManager
 class TestNewsManager(unittest.TestCase):
     def setUp(self):
         self._keywords = ['a', 'b']
-        self._manager = NewsManager('hacker-news', 'list', self._keywords)
+        self._manager = NewsManager('hacker-news', keywords=self._keywords, format_type='list',
+                                    source_params={})
 
     def test_initialize_when_typical(self):
-        self.assertEqual('hacker-news', self._manager._source_name)
+        self._manager = NewsManager('reddit', keywords=self._keywords, format_type='list',
+                                    source_params={'key': 'value'})
+
+        self.assertEqual('reddit', self._manager._source_name)
+        self.assertEqual({'key': 'value'}, self._manager._source_params)
         self.assertEqual('list', self._manager._format_type)
         self.assertEqual(['a', 'b'], self._manager._keywords)
 
@@ -21,6 +26,7 @@ class TestNewsManager(unittest.TestCase):
         self.assertEqual('hacker-news', self._manager._source_name)
         self.assertEqual('list', self._manager._format_type)
         self.assertEqual(None, self._manager._keywords)
+        self.assertEqual({}, self._manager._source_params)
 
     @mock.patch('enlightenme.news.news_formatters.ListNewsFormatter')
     @mock.patch('enlightenme.sources.hacker_news_source.HackerNewsSource.fetch')

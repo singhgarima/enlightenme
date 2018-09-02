@@ -32,14 +32,14 @@ class TestSourceCommand(unittest.TestCase):
         self.assertIn("Fetching news from source: %s" % source_name, result.output)
 
     @mock.patch('enlightenme.news.news_manager.NewsManager.fetch_and_format')
-    def test_source_when_typical_then_fetch_and_format_using_fetcher(self, mock_fetch_and_format):
+    def test_source_when_typical(self, mock_fetch_and_format):
         source_name = "hacker-news"
         self._runner.invoke(self._cli, ["source", source_name])
 
         mock_fetch_and_format.assert_called_once_with()
 
     @mock.patch('enlightenme.news.news_manager.NewsManager')
-    def test_source_when_keywords_provided_then_fetch_and_format_using_fetcher(self, mock_fetcher):
+    def test_source_when_keywords_provided(self, mock_fetcher):
         mock_object = mock.Mock()
         mock_fetcher.return_value = mock_object
         mock_object.mock_valid.return_value = True
@@ -48,7 +48,33 @@ class TestSourceCommand(unittest.TestCase):
         source_name = "hacker-news"
         self._runner.invoke(self._cli, ["source", "--keywords", "python,chaos", source_name])
 
-        mock_fetcher.assert_called_once_with(source_name, format_type='list', keywords=["python", "chaos"])
+        mock_fetcher.assert_called_once_with(source_name,
+                                             source_params={},
+                                             format_type='list',
+                                             keywords=["python", "chaos"])
+        mock_object.fetch_and_format.assert_called_once_with()
+
+    @mock.patch('enlightenme.news.news_manager.NewsManager')
+    def test_source_when_keywords_and_command_params_are_provided(self, mock_fetcher):
+        mock_object = mock.Mock()
+        mock_fetcher.return_value = mock_object
+        mock_object.mock_valid.return_value = True
+        mock_object.fetch_and_format.return_value = None
+
+        source_name = "reddit"
+        self._runner.invoke(self._cli, ["source", "--keywords", "python,chaos",
+                                        source_name,
+                                        '--client-id', 'reddit-identifier',
+                                        '--client-secret', 'reddit-app-secret'
+                                        ])
+
+        mock_fetcher.assert_called_once_with(source_name,
+                                             format_type='list',
+                                             keywords=["python", "chaos"],
+                                             source_params={
+                                                 'client_id': 'reddit-identifier',
+                                                 'client_secret': 'reddit-app-secret'}
+                                             )
         mock_object.fetch_and_format.assert_called_once_with()
 
     @mock.patch('enlightenme.news.news_manager.NewsManager.fetch_and_format')

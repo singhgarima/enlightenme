@@ -15,16 +15,18 @@ class SourceCommand(click.Group):
             ctx.fail("Invalid source %s supplied. See --help" % cmd_name)
 
         @click.pass_context
-        def callback(*args, **kwargs):
+        def callback(cmd_ctx: click.Context, *args, **kwargs):
             keywords = ctx.params.get('keywords', "")
             format_type = ctx.params.get('format')
             output = ctx.params.get('output')
 
             keywords = keywords.split(",") if keywords else None
 
-            news_fetchers = news_manager.NewsManager(cmd_name,
-                                                     format_type=format_type,
-                                                     keywords=keywords)
+            news_fetchers = news_manager.NewsManager(
+                cmd_name,
+                source_params=cmd_ctx.params,
+                format_type=format_type,
+                keywords=keywords)
 
             click.echo("Fetching news from source: %s" % cmd_name)
             content = news_fetchers.fetch_and_format()
@@ -33,5 +35,6 @@ class SourceCommand(click.Group):
         source_class = Source.get_source(cmd_name)
         return click.Command(name=cmd_name,
                              callback=callback,
+                             params=source_class.params(),
                              help=source_class.HELP,
                              short_help=source_class.HELP)

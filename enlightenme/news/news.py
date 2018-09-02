@@ -7,7 +7,7 @@ class News:
         if tags is None:
             tags = []
         self.title = title
-        self.published_at = published_at
+        self.published_at = published_at if published_at else datetime.now()
         self.body = body
         self.url = url
         self.tags = tags
