@@ -32,6 +32,8 @@ class RedditSource(Source):
             click.Option(('--client-id', '-c'),
                          envvar='REDDIT_CLIENT_ID',
                          required=True,
+                         prompt=True,
+                         hide_input=True,
                          help=client_help),
             click.Option(('--client-secret', '-s'),
                          envvar='REDDIT_CLIENT_SECRET',

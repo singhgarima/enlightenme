@@ -37,6 +37,8 @@ class TestRedditSource(unittest.TestCase):
         self.assertListEqual(["--client-id", "-c"], params[0].opts)
         self.assertEqual("REDDIT_CLIENT_ID", params[0].envvar)
         self.assertEqual(True, params[0].required)
+        self.assertEqual('Client id', params[0].prompt)
+        self.assertEqual(True, params[0].hide_input)
         self.assertEqual("See: https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example#first-steps",
                          params[0].help)
 
