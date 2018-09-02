@@ -42,12 +42,14 @@ class RedditSource(Source):
         ]
 
     def fetch(self, keywords: List = None) -> List[News]:
-        hot_reddits = self.reddit.subreddit('all'). \
+        subreddits = '+'.join(keywords) if keywords else 'all'
+        hot_reddits = self.reddit.subreddit(subreddits). \
             hot(limit=RedditSource.NUMBER_OF_REDDITS)
         return [
             News(title=submission.title,
                  published_at=datetime.fromtimestamp(submission.created_utc),
                  url=submission.url,
                  body=submission.selftext,
+                 tags=[str(submission.subreddit)]
                  )
             for submission in hot_reddits]

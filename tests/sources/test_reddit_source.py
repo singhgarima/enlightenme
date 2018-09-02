@@ -67,6 +67,15 @@ class TestRedditSource(unittest.TestCase):
         self.mock_reddit.subreddit.assert_called_once_with('all')
         mock_subreddit.hot.assert_called_once_with(limit=10)
 
+    def test_fetch_should_get_top_hot_posts_from_reddit_for_given_keywords(self):
+        mock_subreddit = MagicMock()
+        self.mock_reddit.subreddit.return_value = mock_subreddit
+
+        self._source.fetch(['python', 'cloud', 'vm'])
+
+        self.mock_reddit.subreddit.assert_called_once_with('python+cloud+vm')
+        mock_subreddit.hot.assert_called_once_with(limit=10)
+
     def test_fetch_should_return_top_10_news(self):
         reddit1 = create_reddit()
         reddit2 = create_reddit()
@@ -83,8 +92,10 @@ class TestRedditSource(unittest.TestCase):
         self.assertEqual(reddit1.url, result[0].url)
         self.assertEqual(datetime.fromtimestamp(reddit1.created_utc), result[0].published_at)
         self.assertEqual(reddit1.selftext, result[0].body)
+        self.assertListEqual([reddit1.subreddit], result[0].tags)
 
         self.assertEqual(reddit2.title, result[1].title)
         self.assertEqual(reddit2.url, result[1].url)
         self.assertEqual(datetime.fromtimestamp(reddit2.created_utc), result[1].published_at)
         self.assertEqual(reddit2.selftext, result[1].body)
+        self.assertListEqual([reddit2.subreddit], result[1].tags)

@@ -33,4 +33,5 @@ def create_reddit():
     return MagicMock(title='Title1' + suffix,
                      url='http://www.reddit/' + suffix,
                      created_utc=1535854049.0,
-                     selftext="hello world!" + suffix)
+                     selftext="hello world!" + suffix,
+                     subreddit='sr' + suffix)
