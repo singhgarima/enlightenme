@@ -15,12 +15,12 @@ pip install enlightenme
 
 * Getting help
 
-[![asciicast](https://asciinema.org/a/qojOYUXxYko6tXLsiNSQSwaPN.png)](https://asciinema.org/a/qojOYUXxYko6tXLsiNSQSwaPN)
+[![Help](https://asciinema.org/a/wyubbW3B6KsOI4Gi5uBDMfJFf.png)](https://asciinema.org/a/wyubbW3B6KsOI4Gi5uBDMfJFf?autoplay=1)
 
 * Hacker News Sample
 
-[![asciicast](https://asciinema.org/a/sRoA67e7zMBARuj1QMRWbPBit.png)](https://asciinema.org/a/sRoA67e7zMBARuj1QMRWbPBit)
+[![Hacker News](https://asciinema.org/a/X8a922jbNjvpm4NZfKnmuCM94.png)](https://asciinema.org/a/X8a922jbNjvpm4NZfKnmuCM94?autoplay=1)
 
 * Reddit Sample
 
-[![asciicast](https://asciinema.org/a/GHQlW5hc4iQaSxj31jgrtoyJu.png)](https://asciinema.org/a/GHQlW5hc4iQaSxj31jgrtoyJu)
+[![asciicast](https://asciinema.org/a/0aalvvZ8PBjCzOY6yBAMXBlBh.png)](https://asciinema.org/a/0aalvvZ8PBjCzOY6yBAMXBlBh?autoplay=1)
