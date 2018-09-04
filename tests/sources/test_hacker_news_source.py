@@ -117,6 +117,5 @@ class HackerNewsStoryTest(unittest.TestCase):
         self.assertIsInstance(result, News)
         self.assertEqual(title, result.title)
         self.assertEqual([], result.tags)
-        self.assertEqual(datetime.datetime(2018, 8, 9, 8, 20, 11), result.published_at)
         self.assertEqual(url, result.url)
         self.assertEqual(None, result.body)
