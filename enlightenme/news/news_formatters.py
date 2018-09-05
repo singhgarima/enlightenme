@@ -1,20 +1,19 @@
 import csv
 import io
+import json
 from abc import ABCMeta, abstractmethod
 from copy import deepcopy
-from typing import List
+from typing import List, Any
 
-from enlightenme.news.news import News
+from enlightenme.news.news import News, DATE_TIME_STR_FORMAT
 from enlightenme.utils import camel_case
-
-DATE_TIME_STR_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 
 
 class NewsFormatter:
     __metaclass__ = ABCMeta
 
     DEFAULT_FORMAT = "list"
-    FORMAT_OPTIONS = ['list', 'csv']
+    FORMAT_OPTIONS = ['list', 'csv', 'json']
 
     def __init__(self, news_list: List[News]):
         self._news_list = news_list
@@ -28,7 +27,7 @@ class NewsFormatter:
         self._news_list = value
 
     @abstractmethod
-    def format(self) -> str:
+    def format(self) -> Any:
         raise NotImplementedError
 
     @classmethod
@@ -57,9 +56,12 @@ class CsvNewsFormatter(NewsFormatter):
         writer = csv.writer(output, quoting=csv.QUOTE_NONNUMERIC)
         for index, news in enumerate(self.news_list):
             if index == 0:
-                writer.writerow(news.__dict__.keys())
-            news_dict = deepcopy(news.__dict__)
-            news_dict['published_at'] = news_dict['published_at']. \
-                strftime(DATE_TIME_STR_FORMAT)
+                writer.writerow(news.to_dict().keys())
+            news_dict = deepcopy(news.to_dict())
             writer.writerow(news_dict.values())
         return output.getvalue()
+
+
+class JsonNewsFormatter(NewsFormatter):
+    def format(self) -> str:
+        return json.dumps([news.to_dict() for news in self.news_list])

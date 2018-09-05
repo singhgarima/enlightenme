@@ -96,7 +96,7 @@ class TestSourceCommand(unittest.TestCase):
     def _assert_result_contains_help_text(self, result):
         self.assertEqual(0, result.exit_code)
         self.assertIn("helps getting latest news from specified sources", result.output)
-        self.assertIn("--format [list|csv]  Displays news in a format", result.output)
-        self.assertIn("--output TEXT        Write to FILE instead of stdout", result.output)
+        self.assertIn("--format [list|csv|json]  Displays news in a format", result.output)
+        self.assertIn("--output TEXT             Write to FILE instead of stdout", result.output)
         self.assertIn("reddit       Source: Reddit (http://reddit.com/)", result.output)
         self.assertIn("hacker-news  Source: hacker-news (https://news.ycombinator.com/)", result.output)

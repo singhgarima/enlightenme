@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from enlightenme.news.news import News
+from enlightenme.news.news import News, DATE_TIME_STR_FORMAT
 
 
 class TestNews(unittest.TestCase):
@@ -44,3 +44,11 @@ class TestNews(unittest.TestCase):
 
     def test_contains_any_keywords_when_one_keyword_not_found(self):
         self.assertFalse(self._news.contains_any_keywords(['nonexistent', 'nonexistent']))
+
+    def test_to_dict(self):
+        self.assertDictEqual({'title': self._title,
+                           'published_at': datetime.strftime(self._published_at, DATE_TIME_STR_FORMAT),
+                           'body': self._body,
+                           'url': self._url,
+                           'tags': self._tags
+                           }, self._news.to_dict())

@@ -1,5 +1,7 @@
 from datetime import datetime
 
+DATE_TIME_STR_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
+
 
 class News:
     def __init__(self, title, published_at: datetime = None,
@@ -24,3 +26,13 @@ class News:
                (self.tags and upper_case_keyword in
                 [tag.upper() for tag in self.tags]) or \
                (self.body and upper_case_keyword in self.body.upper())
+
+    def to_dict(self):
+        return {
+            'title': self.title,
+            'published_at': datetime.strftime(self.published_at,
+                                              DATE_TIME_STR_FORMAT),
+            'body': self.body,
+            'url': self.url,
+            'tags': self.tags,
+        }

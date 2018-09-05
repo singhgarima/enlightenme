@@ -1,6 +1,9 @@
+import json
 import unittest
+from datetime import datetime
 
-from enlightenme.news.news_formatters import NewsFormatter, ListNewsFormatter, CsvNewsFormatter
+from enlightenme.news.news import DATE_TIME_STR_FORMAT
+from enlightenme.news.news_formatters import NewsFormatter, ListNewsFormatter, CsvNewsFormatter, JsonNewsFormatter
 from tests.fixtures import create_news
 
 
@@ -101,3 +104,24 @@ class TestCsvNewsFormatter(unittest.TestCase):
                       '","' +
                       str(self._news.url or '') +
                       '","[]"', result[1])
+
+
+class TestJsonNewsFormatter(unittest.TestCase):
+    def setUp(self):
+        self._news = create_news()
+        self._news_list = [self._news]
+        self._formatter = JsonNewsFormatter(self._news_list)
+
+    def test_initialize(self):
+        self.assertIsInstance(self._formatter, NewsFormatter)
+        self.assertEqual(self._news_list, self._formatter.news_list)
+
+    def test_format(self):
+        result = self._formatter.format()
+
+        self.assertListEqual([{'title': self._news.title,
+                               'published_at': datetime.strftime(self._news.published_at, DATE_TIME_STR_FORMAT),
+                               'body': self._news.body,
+                               'url': self._news.url,
+                               'tags': []
+                               }], json.loads(result))
