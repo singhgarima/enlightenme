@@ -12,6 +12,7 @@ praw = "==6.0.0"
 coverage = "==4.5.1"
 requests-mock = "==1.5.2"
 pycodestyle = "*"
+bumpversion = "*"
 
 [requires]
 python_version = "3.7"
