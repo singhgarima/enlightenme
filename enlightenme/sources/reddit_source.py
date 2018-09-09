@@ -25,7 +25,7 @@ class RedditSource(Source):
         return 'reddit'
 
     @classmethod
-    def params(cls) -> List[click.Parameter]:
+    def params(cls) -> List[click.Option]:
         client_help = "See: https://github.com/reddit-archive/" + \
                       "reddit/wiki/OAuth2-Quick-Start-Example#first-steps. " \
                       "Value can also be provided via env var %s"

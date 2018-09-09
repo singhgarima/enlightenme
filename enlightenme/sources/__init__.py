@@ -22,7 +22,6 @@ class Source:
         return [kls.name() for kls in Source.get_all_source_sub_classes()
                 if kls.name() is not None]
 
-
     @classmethod
     def get_source(cls, source_name: str) -> Optional[SourceType]:
         try:
@@ -36,7 +35,7 @@ class Source:
         return cls._sub_classes()
 
     @classmethod
-    def params(cls) -> List[click.Parameter]:
+    def params(cls) -> List[click.Option]:
         return []
 
     @abstractmethod
