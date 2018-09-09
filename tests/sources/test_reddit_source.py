@@ -24,7 +24,7 @@ class TestRedditSource(unittest.TestCase):
     def test_HELP(self):
         self.assertEqual("Source: Reddit (http://reddit.com/)", RedditSource.HELP)
 
-    def test_HELP(self):
+    def test_NUMBER_OF_REDDITS(self):
         self.assertEqual(10, RedditSource.NUMBER_OF_REDDITS)
 
     def test_name(self):
@@ -39,7 +39,8 @@ class TestRedditSource(unittest.TestCase):
         self.assertEqual(True, params[0].required)
         self.assertEqual('Client id', params[0].prompt)
         self.assertEqual(True, params[0].hide_input)
-        self.assertEqual("See: https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example#first-steps",
+        self.assertEqual("See: https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example#first-steps. "
+                         "Value can also be provided via env var REDDIT_CLIENT_ID",
                          params[0].help)
 
         self.assertListEqual(["--client-secret", "-s"], params[1].opts)
@@ -47,8 +48,10 @@ class TestRedditSource(unittest.TestCase):
         self.assertEqual(True, params[1].required)
         self.assertEqual('Client secret', params[1].prompt)
         self.assertEqual(True, params[1].hide_input)
-        self.assertEqual("See: https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example#first-steps",
-                         params[1].help)
+        self.assertEqual(
+            "See: https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example#first-steps. "
+            "Value can also be provided via env var REDDIT_CLIENT_SECRET",
+            params[1].help)
 
     def test_initialize(self):
         self.assertIsInstance(self._source, Source)

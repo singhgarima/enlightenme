@@ -1,7 +1,9 @@
 import unittest
 
 from enlightenme.sources import Source
+from enlightenme.sources.all_source import AllSource
 from enlightenme.sources.hacker_news_source import HackerNewsSource
+from enlightenme.sources.reddit_source import RedditSource
 
 
 class TestSource(unittest.TestCase):
@@ -13,9 +15,17 @@ class TestSource(unittest.TestCase):
 
     def test_get_all_sources(self):
         sources = Source.get_all_sources()
-        self.assertEqual(2, len(sources))
+        self.assertEqual(3, len(sources))
         self.assertIn('hacker-news', sources)
         self.assertIn('reddit', sources)
+        self.assertIn('all', sources)
+
+    def test_get_all_source_sub_classes(self):
+        sources = Source.get_all_source_sub_classes()
+        self.assertEqual(3, len(sources))
+        self.assertIn(AllSource, sources)
+        self.assertIn(HackerNewsSource, sources)
+        self.assertIn(RedditSource, sources)
 
     def test_get_source(self):
         self.assertEqual(HackerNewsSource, Source.get_source('hacker-news'))
@@ -25,7 +35,5 @@ class TestSource(unittest.TestCase):
 
     def test_fetch_is_implemented(self):
         with self.assertRaises(NotImplementedError):
-            class SubSource(Source):
-                pass
+            Source().fetch()
 
-            SubSource().fetch()

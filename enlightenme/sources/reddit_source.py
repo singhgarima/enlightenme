@@ -27,20 +27,23 @@ class RedditSource(Source):
     @classmethod
     def params(cls) -> List[click.Parameter]:
         client_help = "See: https://github.com/reddit-archive/" + \
-                      "reddit/wiki/OAuth2-Quick-Start-Example#first-steps"
+                      "reddit/wiki/OAuth2-Quick-Start-Example#first-steps. " \
+                      "Value can also be provided via env var %s"
+        client_id_env_var = 'REDDIT_CLIENT_ID'
+        client_secret_env_var = 'REDDIT_CLIENT_SECRET'
         return [
             click.Option(('--client-id', '-c'),
-                         envvar='REDDIT_CLIENT_ID',
+                         envvar=client_id_env_var,
                          required=True,
                          prompt=True,
                          hide_input=True,
-                         help=client_help),
+                         help=client_help % client_id_env_var),
             click.Option(('--client-secret', '-s'),
-                         envvar='REDDIT_CLIENT_SECRET',
+                         envvar=client_secret_env_var,
                          required=True,
                          prompt=True,
                          hide_input=True,
-                         help=client_help)
+                         help=client_help % client_secret_env_var)
         ]
 
     def fetch(self, keywords: List = None) -> List[News]:
