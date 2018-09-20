@@ -11,8 +11,9 @@ class TestNews(unittest.TestCase):
         self._url = "http://example.com"
         self._tags = ['python', 'click']
         self._published_at = datetime.now()
+        self._source = 'reddit'
         self._news = News(title=self._title, published_at=self._published_at, body=self._body, url=self._url,
-                          tags=self._tags)
+                          tags=self._tags, source=self._source)
 
     def test_initialize(self):
         self.assertEqual(self._title, self._news.title)
@@ -20,6 +21,16 @@ class TestNews(unittest.TestCase):
         self.assertEqual(self._body, self._news.body)
         self.assertEqual(self._url, self._news.url)
         self.assertEqual(self._tags, self._news.tags)
+        self.assertEqual(self._source, self._news.source)
+
+    def test_initialize_with_defaults(self):
+        self._news = News('Test Title 2')
+
+        self.assertEqual('Test Title 2', self._news.title)
+        self.assertEqual(None, self._news.body)
+        self.assertEqual(None, self._news.url)
+        self.assertEqual([], self._news.tags)
+        self.assertEqual(None, self._news.source)
 
     def test_has_any_keyword_when_keyword_in_tags(self):
         self.assertTrue(self._news.has_any_keyword('PYTHON'))
@@ -48,7 +59,8 @@ class TestNews(unittest.TestCase):
     def test_to_dict(self):
         self.assertDictEqual({'title': self._title,
                            'published_at': datetime.strftime(self._published_at, DATE_TIME_STR_FORMAT),
+                              'source': self._source,
                            'body': self._body,
                            'url': self._url,
-                           'tags': self._tags
-                           }, self._news.to_dict())
+                              'tags': self._tags,
+                              }, self._news.to_dict())

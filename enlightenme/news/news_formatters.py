@@ -47,6 +47,8 @@ class ListNewsFormatter(NewsFormatter):
                 output += "\t    URL: %s\n" % news.url
             if news.tags:
                 output += "\t    Tags: %s\n" % ", ".join(news.tags)
+            if news.source:
+                output += "\t    Source: %s\n" % news.source
         return output
 
 

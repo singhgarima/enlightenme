@@ -5,7 +5,8 @@ DATE_TIME_STR_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 
 class News:
     def __init__(self, title, published_at: datetime = None,
-                 body: str = None, url: str = None, tags=None):
+                 body: str = None, url: str = None,
+                 tags=None, source=None):
         if tags is None:
             tags = []
         self.title = title
@@ -13,6 +14,7 @@ class News:
         self.body = body
         self.url = url
         self.tags = tags
+        self.source = source
 
     def contains_any_keywords(self, keywords):
         for keyword in keywords:
@@ -35,4 +37,5 @@ class News:
             'body': self.body,
             'url': self.url,
             'tags': self.tags,
+            'source': self.source,
         }

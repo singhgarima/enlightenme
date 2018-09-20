@@ -34,7 +34,7 @@ class TestNewsFormatter(unittest.TestCase):
 
 class TestListNewsFormatter(unittest.TestCase):
     def test_format(self):
-        news = create_news()
+        news = create_news(source=None)
         formatter = ListNewsFormatter([news])
 
         output = formatter.format()
@@ -42,8 +42,9 @@ class TestListNewsFormatter(unittest.TestCase):
         self.assertEqual(
             ("\n" +
              "\t1. Title: %s\n" +
-             "\t    Published At: %s\n") % (
-                news.title, news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ')), output)
+             "\t    Published At: %s\n" +
+             "\t    Source: %s\n") % (
+                news.title, news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ'), news.source), output)
 
     def test_format_when_news_has_urls(self):
         url = "http://example.com/thistest"
@@ -56,11 +57,13 @@ class TestListNewsFormatter(unittest.TestCase):
             ("\n" +
              "\t1. Title: %s\n" +
              "\t    Published At: %s\n" +
-             "\t    URL: %s\n"
+             "\t    URL: %s\n" +
+             "\t    Source: %s\n"
              ) % (
                 news.title,
                 news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
-                url
+                url,
+                news.source
             ), output)
 
     def test_format_when_news_has_tags(self):
@@ -75,10 +78,12 @@ class TestListNewsFormatter(unittest.TestCase):
              "\t1. Title: %s\n" +
              "\t    Published At: %s\n" +
              "\t    Tags: %s\n"
+             "\t    Source: %s\n"
              ) % (
                 news.title,
                 news.published_at.strftime('%Y-%m-%dT%H:%M:%SZ'),
-                ", ".join(tags)
+                ", ".join(tags),
+                news.source
             ), output)
 
 
@@ -121,6 +126,7 @@ class TestJsonNewsFormatter(unittest.TestCase):
 
         self.assertListEqual([{'title': self._news.title,
                                'published_at': datetime.strftime(self._news.published_at, DATE_TIME_STR_FORMAT),
+                               'source': self._news.source,
                                'body': self._news.body,
                                'url': self._news.url,
                                'tags': []

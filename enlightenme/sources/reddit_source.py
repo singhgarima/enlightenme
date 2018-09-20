@@ -53,8 +53,8 @@ class RedditSource(Source):
         return [
             News(title=submission.title,
                  published_at=datetime.fromtimestamp(submission.created_utc),
-                 url=submission.url,
                  body=submission.selftext,
-                 tags=[str(submission.subreddit)]
-                 )
+                 url=submission.url,
+                 tags=[str(submission.subreddit)],
+                 source=RedditSource.name())
             for submission in hot_reddits]

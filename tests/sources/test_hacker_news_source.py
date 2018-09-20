@@ -119,3 +119,4 @@ class HackerNewsStoryTest(unittest.TestCase):
         self.assertEqual([], result.tags)
         self.assertEqual(url, result.url)
         self.assertEqual(None, result.body)
+        self.assertEqual('hacker-news', result.source)

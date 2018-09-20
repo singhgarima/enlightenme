@@ -20,12 +20,13 @@ def hacker_news_story(story_id: int, title: str = None, author: str = None, text
     return story
 
 
-def create_news(title: str = None, published_at: datetime = None, body: str = None, url: str = None, tags=None):
+def create_news(title: str = None, published_at: datetime = None, body: str = None, url: str = None, tags=None, source=None):
     tags = [] if tags is None else tags
+    source = "reddit" if source is None else source
     title = title if title else "I am " + str(randint(1, 100000))
     published_at = datetime.now() if published_at is None else published_at
 
-    return News(title, published_at, body=body, url=url, tags=tags)
+    return News(title, published_at, body=body, url=url, tags=tags, source=source)
 
 
 def create_reddit():

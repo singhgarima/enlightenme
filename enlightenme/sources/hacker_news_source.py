@@ -77,4 +77,6 @@ class HackerNewsStory:
         return News(self._story_details.get("title"),
                     published_at,
                     self._story_details.get("text"),
-                    self._story_details.get("url"))
+                    self._story_details.get("url"),
+                    [],
+                    HackerNewsSource.name())
